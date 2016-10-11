@@ -1,0 +1,25 @@
+Package: PTXQC
+Type: Package
+Title: Quality Report Generation for MaxQuant Results
+Version: 0.80.13
+Date: 2016-10-07
+Author: Chris Bielow <chris.bielow@mdc-berlin.de>
+Maintainer: Chris Bielow <chris.bielow@mdc-berlin.de>
+Description: Generates Proteomics (PTX) quality control (QC) reports for shotgun LC-MS data analyzed with the 
+             MaxQuant software suite (see <http://www.maxquant.org>).
+             Reports are customizable (target thresholds, subsetting) and available in HTML or PDF format.
+             Published in J. Proteome Res., Proteomics Quality Control: Quality Control Software for MaxQuant Results (2015) <doi:10.1021/acs.jproteome.5b00780>.
+Depends: R (>= 3.0.0)
+Imports: data.table, ggplot2, ggdendro, graphics, grid, gridExtra,
+        grDevices, gtable, methods, plyr, proto, RColorBrewer,
+        reshape2, rmarkdown, seqinr, stats, utils, yaml
+Suggests: knitr (>= 1.10), testthat
+VignetteBuilder: knitr
+License: GPL-2
+RoxygenNote: 5.0.1
+URL: https://github.com/cbielow/PTXQC
+BugReports: https://github.com/cbielow/PTXQC/issues
+Packaged: 2016-10-11 07:35:21 UTC; cbielow
+NeedsCompilation: no
+Repository: CRAN
+Date/Publication: 2016-10-11 12:42:38

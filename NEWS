@@ -1,0 +1,85 @@
+This NEWS file mainly serves as a changelog file,
+i.e. a list of new features / bugfixes by version number.
+
+#################################
+#########   CHANGELOG  ##########
+#################################
+
+v0.80.13 -- 2016/10/07
+  -  minor documentation changes prior to CRAN submission
+  
+v0.80.12 -- 2016/09/28
+  -  bug fixes
+      - fix error during in 'PG: Ratio Density' plot when all ratio data is empty (e.g. for blank samples)
+
+v0.80.11 -- 2016/08/11
+  -  bug fixes
+      - augment fix from v0.80.9 since MaxQuant for finding a MBR reference Raw file
+
+v0.80.10 -- 2016/08/04
+  -  automatic detection which txt files are present [only these are used]
+
+v0.80.9 -- 2016/08/02
+  - bug fixes
+     - MBR-Metric: if more than one RT-reference is found (which can happen for a VERY stable LC), the first is picked
+       https://github.com/cbielow/PTXQC/issues/25
+  - minor doc improvements     
+
+v0.80.8 -- 2016/07/13
+  - bug fixes
+     - avoid crash in pre-calibration metric when there is only a single peptide identified in (any) Raw file
+
+v0.80.7 -- 2016/06/09
+  - features
+     - support for 32bit R for Drag'n'Drop batch file
+  - bug fixes
+     - fix missing score distribution plots for custom contaminants
+     - small documentation improvements
+          
+v0.80.6 -- 2016/06/06
+  - bug fixes
+     - fix NA's (empty bars) in MBR ID transfer plot for very sparse Raw files
+     - fix crash when plotting EVD aux-plots for Raw files with NO ID's (0% id rate)
+      
+v0.80.5 -- 2016/04/15
+  - bug fixes
+      https://github.com/cbielow/PTXQC/issues/23  (EVD: MS/MS Oversampling bug)
+
+v0.80.4 -- 2016/04/11
+  - bug fixes
+      https://github.com/cbielow/PTXQC/issues/22  (Drag'n'drop of folders with space character)
+  
+v0.80.3 -- 2016/04/08
+  - bug fixes
+      https://github.com/cbielow/PTXQC/issues/21
+  - Html report will be created prior to PDF file (if both are requested [default])
+  - minor doc improvments (Metric help texts in Html report)
+
+v0.80.2 -- 2016/04/04
+  - reduce memory footprint (~50% reduction; replacing ddply() with data.table[])
+
+v0.80.1 -- 2016/03/15
+  - experimental missing value metric (on peptide level)
+    - density plots (showing what intensities are usually missing)
+      - includes simple inter-Raw file normalization scheme
+    - percentage of missing values (lower is better) -- used for scoring in heatmap
+    
+v0.80.0 -- 2016/02
+  - Report format is by default now Html and PDF (you get two identical reports)
+  - Html report includes help texts describing each metric and scoring
+  - order of metrics is now matching the wet-lab workflow (roughly), but can be customized (i.e. user-defined) using the YAML config
+  - removed Bioconductor dependency (for easier installation)
+  - bugfixes / minor improvements
+
+v0.70.3
+  - internal restructuring
+
+v0.70.2
+  - faster loading of txt files / better consistency checking
+  - support for Chinese "NA" entries in Txt files
+  
+v0.70.1
+  - fix empty parameter page (bug in 0.70.0)
+  
+v0.70.0
+  - support for data containing MS3 scans  

@@ -1,0 +1,89 @@
+---
+title: "Frequently asked questions for PTXQC"
+author: "Chris Bielow <chris.bielow@mdc-berlin.de>"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    toc: true
+  pdf_document: null
+vignette: >
+  %\VignetteIndexEntry{Frequently asked questions for PTXQC}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+# FAQ (Frequently asked questions) for PTXQC
+
+## Installation
+_______
+
+### Q: During installation an error pops up: '... cannot open URL 'ftp://ftp.pride.ebi.ac.uk/pride/ ..'. ###
+
+**Answer:** When R builds the vignettes for PTXQC, it needs to download a test dataset from a public PRIDE repository. On rare occasions, the server
+might not be reachable. Either wait a little until it comes back up and try again, OR simply skip building the vignettes using
+
+```install_github("cbielow/PTXQC", build_vignettes = FALSE)```
+
+This omits the part where the error occurs. Downside: no offline
+vignettes for PTXQC -- but you can always look them up on GitHub.
+
+### Q: During installation an error pops up: '... cannot open the connection...'. ###
+
+**Answer:** One common error is that the CRAN mirror hosting the R packages is incomplete/buggy and installation of packages fails.
+   This **could** look like this:
+   ```
+   Error in XXXX(file.path(pkgname, "DESCRIPTION"), c("Package", "Type")) : 
+   cannot open the connection
+   In addition: Warning messages:
+   ...
+   ```
+   or
+   ```
+   Warning message:
+   In download.file(url, destfile, method, mode = "wb", ...) :
+   downloaded length 228962 != reported length 229751
+   ```
+   
+   Try another CRAN mirror (type `chooseCRANmirror()`) and then re-run the failed command.
+  
+   If you're still stuck, please open a [ticket] [issuetracker] (see 'Bug Reporting' on the main PTXQC homepage for the details you should provide).
+
+### Q: During vignette building, I see an error related to Pandoc and 'It seems you should call rmarkdown::render() instead of knitr::knit2html()'.   
+
+**Answer:** The full error message could look like:
+```ERROR Warning in engine$weave(file, quiet = quiet, encoding = enc) : Pandoc (>= 1.12.3) and/or pandoc-citeproc is not available. Please install both. Warning in readLines(con) : incomplete final line found on 'PTXQC-Basic_Guide_for_R_users.Rmd' Error: processing vignette 'PTXQC-Basic_Guide_for_R_users.Rmd' failed with diagnostics: It seems you should call rmarkdown::render() instead of knitr::knit2html() because PTXQC-Basic_Guide_for_R_users.Rmd appears to be an R Markdown v2 document. Execution halted Error: Command failed (1)```
+
+Knitr (which is the engine which builds the vignettes), relies on Pandoc. If you called `install_github("cbielow/PTXQC", build_vignettes = TRUE)` then Pandoc is required!
+See the installation instructions on where to get it. Make sure to restart R once you have installed Pandoc!
+Pandoc is also required to build the report in Html format -- which the default. PDF works just fine without Pandoc.
+
+If you really don't have or want Pandoc, you can skip vignettes and install PTXQC using `install_github("cbielow/PTXQC", build_vignettes = FALSE)` and
+configure your YAML parameter file to omit Html reports and just get plain PDF (not recommended though).
+_______
+
+## Report Creation
+
+### Q: A warning **"The file '<...>/mqpar.xml' was not found..."** in the console popped up. ###
+
+**Answer:** PTXQC uses the mqpar.xml file from MaxQuant to extract certain parameters (like mass accuracy search tolerances) automatically. By default the mqpar.xml is created by MaxQuant in the root folder of each analysis (where the Raw files reside). The warning now tells you to **copy this mqpar.xml into the combined/txt/ folder**, where PTXQC can read it.
+    
+The reason why PTXQC does not directly use the mqpar.xml from the root folder is two-fold:
+
+1. the mqpar.xml at the root folder might be outdated/changed, especially of you run MaxQuant multiple times, and rename the txt folders (to compare multiple parameter settings)
+2. users often copy the txt folder from the MaxQuant 'server' to a remote machine 
+            for result interpretation. Usually only the txt folder is copied, but not the Raw files. 
+            If PTXQC is run on the remote machine, the mqpar.xml needs to reside within the txt folder.
+
+_______
+
+## Report Interpretation
+
+### Q: How do I know what the figures in the report mean? ###
+
+**Answer:** Most metrics and figures are described in the publication (see 'Citation' on the main homepage of PTXQC). Updated and new metrics will be described in the documentation of the package. A short description of each plot and the scoring function is given in each Html report (click the "Show Help" box just below each section heading). See [examples][https://github.com/cbielow/PTXQC/tree/master/inst/examples] for more.
+
+_______
+   
+  [issuetracker]: https://github.com/cbielow/PTXQC/issues
+
+

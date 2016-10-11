@@ -1,0 +1,57 @@
+---
+title: "Input/Output data for PTXQC"
+author: "Chris Bielow <chris.bielow@mdc-berlin.de>"
+date: '`r Sys.Date()`'
+output:
+  html_document: default
+  pdf_document: null
+vignette: >
+  %\VignetteIndexEntry{Input/Output data for PTXQC}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+# Input/Output data for PTXQC
+
+PTXQC generates quality control reports for [MaxQuant] results.
+
+## Input
+
+When a full report is generated, PTXQC requires the following **input files**:
+  
+  - parameters.txt
+  - summary.txt
+  - proteinGroups.txt
+  - evidence.txt
+  - msms.txt
+  - msmsScans.txt
+
+These files can be found in the `<baseDir>/combined/txt` folder after MaxQuant analysis successfully finished.
+Here, `<baseDir>` is your main MaxQuant project folder containing your Raw files.
+
+If you are not interested in the full report, PTXQC can be configured to look only at some of these files by editing the YAML file. See the [PTX-CustomizeReport] [Ref_VignCust] vignette
+```{r, eval=FALSE}
+vignette("PTXQC-CustomizeReport", package = "PTXQC")
+```
+for details. Alternatively, you can rename any .txt file if you want PTXQC to ignore it.
+
+## Output
+
+By default, PTXQC will generate a report in both **Html** and **PDF** format.
+
+To enable/disable a certain format (Html/PDF), just set it in the YAML config file (see above for the vignette hint on report customization).
+
+Further output files (with the same prefix name as the Html/PDF report), include
+
+  - `report_vXXX_heatmap.txt` (values of the overview heatmap)
+  - `report_vXXX_filename_sort.txt` (customize the order and naming of Raw files in the report)
+  - `report_v0XXX.yaml` (the configuration file)
+  
+The YAML configuration file is created the first time you run PTXQC on a txt-folder. Customize it as you see fit.
+
+Read more about `report_vXXX_filename_sort.txt` and `report_vXXX.yaml` in the [PTX-CustomizeReport] [Ref_VignCust] vignette.
+  
+
+  [MaxQuant]: http://www.maxquant.org
+  [Ref_VignCust]: https://github.com/cbielow/PTXQC/blob/master/vignettes/PTXQC-CustomizeReport.Rmd
+
