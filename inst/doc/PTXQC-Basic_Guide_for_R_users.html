@@ -10,7 +10,7 @@
 
 <meta name="author" content="Chris Bielow chris.bielow@mdc-berlin.de" />
 
-<meta name="date" content="2016-10-11" />
+<meta name="date" content="2016-10-13" />
 
 <title>Basic R-Usage Guide for PTXQC</title>
 
@@ -64,7 +64,7 @@ img {
 <div id="header">
 <h1 class="title">Basic R-Usage Guide for PTXQC</h1>
 <h4 class="author"><em>Chris Bielow <a href="mailto:chris.bielow@mdc-berlin.de">chris.bielow@mdc-berlin.de</a></em></h4>
-<h4 class="date"><em>2016-10-11</em></h4>
+<h4 class="date"><em>2016-10-13</em></h4>
 </div>
 
 
@@ -80,7 +80,7 @@ img {
 <p>This is the most simple invokation of PTXQC::createReport().</p>
 <pre class="r"><code>require(PTXQC)</code></pre>
 <pre><code>## Loading required package: PTXQC
-## Loading package PTXQC (version 0.80.13)</code></pre>
+## Loading package PTXQC (version 0.80.14)</code></pre>
 <pre class="r"><code>## the next require() is needed to prevent a spurious error in certain R versions (might be a bug in R or a package)
 ## error message is:
 ##    Error in Scales$new : could not find function &quot;loadMethod&quot;
@@ -196,8 +196,8 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 9999 
 ## getYAML with: File$Parameters$enabled  default: TRUE 
 ##  .. return default: TRUE 
-## Reading file E:\___tmp\RtmpopnPlE/txt_20min/parameters.txt ...
-## Read 61 entries from E:\___tmp\RtmpopnPlE/txt_20min/parameters.txt.
+## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/parameters.txt ...
+## Read 61 entries from E:\___tmp\RtmpUx3IPL/txt_20min/parameters.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -212,8 +212,8 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 10 
 ## getYAML with: File$Summary$enabled  default: TRUE 
 ##  .. return default: TRUE 
-## Reading file E:\___tmp\RtmpopnPlE/txt_20min/summary.txt ...
-## Read 9 entries from E:\___tmp\RtmpopnPlE/txt_20min/summary.txt.
+## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/summary.txt ...
+## Read 9 entries from E:\___tmp\RtmpUx3IPL/txt_20min/summary.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -233,8 +233,8 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 4 
 ## getYAML with: File$ProteinGroups$enabled  default: TRUE 
 ##  .. return default: TRUE 
-## Reading file E:\___tmp\RtmpopnPlE/txt_20min/proteinGroups.txt ...
-## Read 4134 entries from E:\___tmp\RtmpopnPlE/txt_20min/proteinGroups.txt.
+## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/proteinGroups.txt ...
+## Read 4134 entries from E:\___tmp\RtmpUx3IPL/txt_20min/proteinGroups.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -276,7 +276,7 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 23 
 ## getYAML with: File$Evidence$PeptideCountThresh_num  default: 15000 
 ##  .. return default: 15000 
-## Reading file E:\___tmp\RtmpopnPlE/txt_20min/evidence.txt ...
+## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/evidence.txt ...
 ## Requiring column(s) 'retention.length' to be of type 'numeric'!
 ## Requiring column(s) 'retention.time.calibration' to be of type 'numeric'!
 ## Requiring column(s) 'retention.time', 'calibrated.retention.time' to be of type 'numeric'!
@@ -292,7 +292,7 @@ r = createReport(txt_folder)</code></pre>
 ## Requiring column(s) 'mass' to be of type 'numeric'!
 ## Requiring column(s) 'ms.ms.count' to be of type 'numeric'!
 ## Keeping 17 of 62 columns!
-## Read 90398 entries from E:\___tmp\RtmpopnPlE/txt_20min/evidence.txt.
+## Read 90398 entries from E:\___tmp\RtmpUx3IPL/txt_20min/evidence.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -340,7 +340,7 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: auto 
 ## Starting to work on EVD: MBR Align ...
 ## 
-## Memory [MB] prior|after|max(diff) : 84.9 | 85.2 | 152.6 (68)
+## Memory [MB] prior|after|max(diff) : 84.9 | 85.2 | 152.7 (68)
 ## 
 ## Duration: 10 s
 ## 
@@ -349,7 +349,7 @@ r = createReport(txt_folder)</code></pre>
 ## 
 ## Memory [MB] prior|after|max(diff) : 85.2 | 86.7 | 267 (182)
 ## 
-## Duration: 83 s
+## Duration: 84 s
 ## 
 ## ... EVD: MBR ID-Transfer  done
 ## Starting to work on EVD: MBR auxilliary ...
@@ -416,18 +416,18 @@ r = createReport(txt_folder)</code></pre>
 ## ... EVD: Pep Missing Values  done
 ## getYAML with: File$MsMs$enabled  default: TRUE 
 ##  .. return default: TRUE 
-## Reading file E:\___tmp\RtmpopnPlE/txt_20min/msms.txt ...
+## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/msms.txt ...
 ## Requiring column(s) 'missed.cleavages' to be of type 'numeric'!
 ## Requiring column(s) 'evidence.id' to be of type 'numeric'!
 ## Keeping 2 of 60 columns!
-## Read 86086 entries from E:\___tmp\RtmpopnPlE/txt_20min/msms.txt.
+## Read 86086 entries from E:\___tmp\RtmpUx3IPL/txt_20min/msms.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
 ## Adding fc.raw.file column ... done
 ## Starting to work on MSMS: MS^2 Cal (%s) ...
 ## 
-## Memory [MB] prior|after|max(diff) : 205.5 | 209.2 | 236.4 (31)
+## Memory [MB] prior|after|max(diff) : 205.5 | 209.2 | 236.3 (31)
 ## 
 ## Duration: 1 s
 ## 
@@ -441,11 +441,11 @@ r = createReport(txt_folder)</code></pre>
 ## ... MSMS: %s  done
 ## getYAML with: File$MsMsScans$enabled  default: TRUE 
 ##  .. return default: TRUE 
-## Reading file E:\___tmp\RtmpopnPlE/txt_20min/msmsScans.txt ...
+## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/msmsScans.txt ...
 ## Requiring column(s) 'ion.injection.time' to be of type 'numeric'!
 ## Requiring column(s) 'retention.time' to be of type 'numeric'!
 ## Keeping 2 of 41 columns!
-## Read 201567 entries from E:\___tmp\RtmpopnPlE/txt_20min/msmsScans.txt.
+## Read 201567 entries from E:\___tmp\RtmpUx3IPL/txt_20min/msmsScans.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -454,28 +454,28 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 10 
 ## Starting to work on MS^2*Scans: TopN over RT ...
 ## 
-## Memory [MB] prior|after|max(diff) : 128.1 | 129.4 | 239.7 (112)
+## Memory [MB] prior|after|max(diff) : 121.9 | 123.2 | 233.5 (112)
 ## 
 ## Duration: 1 s
 ## 
 ## ... MS^2*Scans: TopN over RT  done
 ## Starting to work on MS^2*Scans: Ion Inj Time ...
 ## 
-## Memory [MB] prior|after|max(diff) : 129.4 | 129.5 | 157 (28)
+## Memory [MB] prior|after|max(diff) : 123.2 | 123.4 | 150.8 (28)
 ## 
 ## Duration: 0 s
 ## 
 ## ... MS^2*Scans: Ion Inj Time  done
 ## Starting to work on MS^2*Scans: TopN high ...
 ## 
-## Memory [MB] prior|after|max(diff) : 129.5 | 129.5 | 144 (14)
+## Memory [MB] prior|after|max(diff) : 123.3 | 123.4 | 137.8 (14)
 ## 
 ## Duration: 0 s
 ## 
 ## ... MS^2*Scans: TopN high  done
 ## Starting to work on MS^2*Scans: TopN ID over N ...
 ## 
-## Memory [MB] prior|after|max(diff) : 129.5 | 129.5 | 152.6 (23)
+## Memory [MB] prior|after|max(diff) : 123.4 | 123.4 | 146.4 (23)
 ## 
 ## Duration: 0 s
 ## 
@@ -484,7 +484,7 @@ r = createReport(txt_folder)</code></pre>
 ## [1] 30
 ## Starting to work on Average Overall Quality ...
 ## 
-## Memory [MB] prior|after|max(diff) : 128.1 | 128.1 | 129.2 (1)
+## Memory [MB] prior|after|max(diff) : 121.9 | 121.9 | 123.1 (1)
 ## 
 ## Duration: 0 s
 ## 
@@ -498,9 +498,9 @@ r = createReport(txt_folder)</code></pre>
 ## Creating Report file ...</code></pre>
 <pre><code>## processing file: PTXQC_report_template.Rmd
 ## output file: PTXQC_report_template.knit.md</code></pre>
-<pre><code>## &quot;C:/Program Files/RStudio/bin/pandoc/pandoc&quot; +RTS -K512m -RTS PTXQC_report_template.utf8.md --to html --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash-implicit_figures --output &quot;E:\___tmp\RtmpopnPlE/txt_20min/report_v0.80.13_txt_20min.html&quot; --smart --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --template &quot;K:\R\win-library\3.1\rmarkdown\rmd\h\default.html&quot; --number-sections --variable &quot;theme:bootstrap&quot; --include-in-header &quot;E:\___tmp\RtmpopnPlE\rmarkdown-str1d4c22f42835.html&quot; --no-highlight --variable &quot;highlightjs=K:\R\win-library\3.1\rmarkdown\rmd\h\highlight&quot;</code></pre>
+<pre><code>## &quot;C:/Program Files/RStudio/bin/pandoc/pandoc&quot; +RTS -K512m -RTS PTXQC_report_template.utf8.md --to html --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash-implicit_figures --output &quot;E:\___tmp\RtmpUx3IPL/txt_20min/report_v0.80.14_txt_20min.html&quot; --smart --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --template &quot;K:\R\win-library\3.1\rmarkdown\rmd\h\default.html&quot; --number-sections --variable &quot;theme:bootstrap&quot; --include-in-header &quot;E:\___tmp\RtmpUx3IPL\rmarkdown-str203c1c0d322.html&quot; --no-highlight --variable &quot;highlightjs=K:\R\win-library\3.1\rmarkdown\rmd\h\highlight&quot;</code></pre>
 <pre><code>## 
-## Output created: E:\___tmp\RtmpopnPlE/txt_20min/report_v0.80.13_txt_20min.html</code></pre>
+## Output created: E:\___tmp\RtmpUx3IPL/txt_20min/report_v0.80.14_txt_20min.html</code></pre>
 <pre><code>## [[1]]</code></pre>
 <pre><code>## 
 ## [[1]]</code></pre>
@@ -792,14 +792,14 @@ r = createReport(txt_folder)</code></pre>
 ##  done
 ## Report file created at
 ## 
-##     E:\___tmp\RtmpopnPlE/txt_20min/report_v0.80.13_txt_20min.*
+##     E:\___tmp\RtmpUx3IPL/txt_20min/report_v0.80.14_txt_20min.*
 ## 
 ## 
 ## 
 ## Time elapsed: 3.1 min</code></pre>
 <pre class="r"><code>cat(paste0(&quot;\nReport generated as '&quot;, r$report_file, &quot;'\n\n&quot;))</code></pre>
 <pre><code>## 
-## Report generated as 'E:\___tmp\RtmpopnPlE/txt_20min/report_v0.80.13_txt_20min'</code></pre>
+## Report generated as 'E:\___tmp\RtmpUx3IPL/txt_20min/report_v0.80.14_txt_20min'</code></pre>
 </div>
 <div id="generate-a-customized-report" class="section level2">
 <h2>Generate a customized report</h2>

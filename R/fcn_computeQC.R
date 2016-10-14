@@ -22,7 +22,7 @@
 #'          
 #' @importFrom plyr ddply dlply ldply llply adply summarise mapvalues
 #' @importFrom reshape2 melt
-#' @importFrom rmarkdown render
+#' @importFrom rmarkdown render pandoc_available
 #' @importFrom grDevices dev.off pdf
 #' 
 #' @export
@@ -343,28 +343,7 @@ createReport = function(txt_folder, yaml_obj = list())
                                                                          numeric = "^Charge$", "modified.sequence",
                                                                          numeric = "^Mass$", "^protein.names$",
                                                                          numeric = "^ms.ms.count$"))
-# 
-#                                                                          numeric = "^ms.ms.count$",
-#                                                                          numeric = "^reporter.intensity.[0-9]$"))
-#     colnames(d_evd)
-#     if (length(grepv("^reporter", colnames(d_evd))) > 0) {
-#       dd = melt(d_evd[, c("fc.raw.file", grepv("^reporter", colnames(d_evd)))], id.vars = "fc.raw.file")
-#       dd_labEff = ddply(dd, c("fc.raw.file", "variable"), function(x) {
-#         data.frame(pc_labeled = sum(x$value == 0 | is.na(x$value)) / nrow(x) * 100)
-#       })
-#       ggplot(dd_labEff) + 
-#         geom_bar(aes(variable, pc_labeled), stat="identity") +
-#         coord_flip() +
-#         facet_wrap(~ fc.raw.file)
-#     
-#       head(dd)
-#       dd$value[is.na(dd$value)] = 0
-#       ggplot(dd) + geom_boxplot(aes(variable, log(value+1))) + facet_wrap(~fc.raw.file)
-#       ggplot(dd) + geom_boxplot(aes(variable, log(value+0))) + facet_wrap(~fc.raw.file)
-#     
-#       stop("")
-#     }
-    
+
     ### warn of special contaminants!
     ## these need to be in FASTA headers (description is not enough)!
     ## syntax:  list( contaminant1 = c(name, threshold), contaminant2 = c(...), ...)
@@ -586,22 +565,8 @@ if (enabled_msms)
                                                                             "^Raw.file$",
                                                                             "^mass.deviations",
                                                                             "^masses$", "^mass.analyzer$", "fragmentation", "reverse",
-                                                                            numeric = "^evidence.id$" #,
-                                                                            #numeric = "^reporter.intensity.[0-9]$"
+                                                                            numeric = "^evidence.id$"
                                                                             ), check_invalid_lines = FALSE)
-  
-  
-# colnames(d_msms)
-# ## unfortunately, these columns are empty (at least when reporters were quantified using MS3) -- and ms3.txt does not have them either
-# dd = melt(d_msms[, c("fc.raw.file", grepv("^reporter", colnames(d_msms)))], id.vars = "fc.raw.file")
-# dd_labEff = ddply(dd, c("fc.raw.file", "variable"), function(x) {
-#   data.frame(pc_labeled = sum(x$value > 0 | (!is.na(x$value))) / nrow(x) * 100)
-# })
-# ggplot(dd_labEff) + 
-#   geom_bar(aes(variable, pc_labeled), stat="identity") +
-#   coord_flip() +
-#   facet_wrap(~ fc.raw.file)
-
   
   ##
   ##  MS2 fragment decalibration
@@ -639,29 +604,8 @@ if (enabled_msmsscans)
                                         numeric = "^retention.time$", 
                                         "^Identified", 
                                         "^Scan.event.number", 
-                                        "^Raw.file",
-                                        "^identified",
-                                        "^score",
-                                        "^total.ion.current",
-                                        "^m.z",
-                                        "^mass$"),
+                                        "^Raw.file"),
                          check_invalid_lines = FALSE)
-#   
-#   d_msmsScan$m2 = 
-#   d_msmsScan$mdef = d_msmsScan$mass - trunc(d_msmsScan$mass)
-#   head(d_msmsScan$mass)
-#   ggplot(d_msmsScan[d_msmsScan$fc.raw.file == "file 01",]) + geom_point(aes(mass, mdef, col = identified), alpha=0.2)
-#   
-#   stop("")
-#   ddply(d_msmsScan, "fc.raw.file", function(x){
-#     xx <<- x
-#     x = xx
-#     x$score[is.na(x$score)] = runif(sum(is.na(x$score)), 0, 2)
-#     print(ggplot(x) + geom_jitter(aes(score, log(total.ion.current+2))))
-#     stop("")
-#     return(NULL)
-#   })
-  
   
   param_name_MSMSScans_ionInjThresh = "File$MsMsScans$IonInjectionThresh_num"
   param_def_MSMSScans_ionInjThresh = 10 ## default ion injection threshold in milliseconds
@@ -750,16 +694,21 @@ if (any(is.na(out_format_requested)))
 
 if ("html" %in% out_format_requested)
 {
-  fh_out$report_file_extension = c(fh_out$report_file_extension, ".html")
-  
-  if (DEBUG_PTXQC) {
-    html_template = "C:/projects/QC/package/PTXQC/inst/reportTemplate/PTXQC_report_template.Rmd"
+  if (pandoc_available()) {
+    ## HTML reports require Pandoc for converting Markdown to Html via the rmarkdown package
+    fh_out$report_file_extension = c(fh_out$report_file_extension, ".html")
+    
+    if (DEBUG_PTXQC) {
+      html_template = "C:/projects/QC/package/PTXQC/inst/reportTemplate/PTXQC_report_template.Rmd"
+    } else {
+      html_template = system.file("./reportTemplate/PTXQC_report_template.Rmd", package="PTXQC")
+    }
+    html_template
+    ## Rmarkdown: convert to Markdown, and then to HTML (or PDF) ...
+    render(html_template, output_file = paste0(fh_out$report_file, ".html"))
   } else {
-    html_template = system.file("./reportTemplate/PTXQC_report_template.Rmd", package="PTXQC")
+    warning("The 'Pandoc' converter is not installed on your system but is required for HTML reports.\nPlease install Pandoc <http://pandoc.org/installing.html>. Restart your R-session afterwards.")
   }
-  html_template
-  ## Rmarkdown: convert to Markdown, and then to HTML or PDF...
-  render(html_template, output_file = paste0(fh_out$report_file, ".html"))
 }
 
 if ("plainPDF" %in% out_format_requested)
