@@ -10,7 +10,7 @@
 
 <meta name="author" content="Chris Bielow chris.bielow@mdc-berlin.de" />
 
-<meta name="date" content="2016-10-13" />
+<meta name="date" content="2017-02-17" />
 
 <title>Basic R-Usage Guide for PTXQC</title>
 
@@ -64,7 +64,7 @@ img {
 <div id="header">
 <h1 class="title">Basic R-Usage Guide for PTXQC</h1>
 <h4 class="author"><em>Chris Bielow <a href="mailto:chris.bielow@mdc-berlin.de">chris.bielow@mdc-berlin.de</a></em></h4>
-<h4 class="date"><em>2016-10-13</em></h4>
+<h4 class="date"><em>2017-02-17</em></h4>
 </div>
 
 
@@ -80,7 +80,7 @@ img {
 <p>This is the most simple invokation of PTXQC::createReport().</p>
 <pre class="r"><code>require(PTXQC)</code></pre>
 <pre><code>## Loading required package: PTXQC
-## Loading package PTXQC (version 0.80.14)</code></pre>
+## Loading package PTXQC (version 0.82.2)</code></pre>
 <pre class="r"><code>## the next require() is needed to prevent a spurious error in certain R versions (might be a bug in R or a package)
 ## error message is:
 ##    Error in Scales$new : could not find function &quot;loadMethod&quot;
@@ -161,6 +161,9 @@ r = createReport(txt_folder)</code></pre>
 ## meta id:  qcMetric_MSMSScans_IonInjTime 
 ## getYAML with: order$qcMetric_MSMSScans_IonInjTime  default: 240 
 ##  .. return default: 240 
+## meta id:  qcMetric_MSMSScans_MSMSIntensity 
+## getYAML with: order$qcMetric_MSMSScans_MSMSIntensity  default: 245 
+##  .. return default: 245 
 ## meta id:  qcMetric_EVD_MS2OverSampling 
 ## getYAML with: order$qcMetric_EVD_MS2OverSampling  default: 250 
 ##  .. return default: 250 
@@ -182,6 +185,9 @@ r = createReport(txt_folder)</code></pre>
 ## meta id:  qcMetric_MSMSScans_TopNID 
 ## getYAML with: order$qcMetric_MSMSScans_TopNID  default: 380 
 ##  .. return default: 380 
+## meta id:  qcMetric_MSMSScans_DepPep 
+## getYAML with: order$qcMetric_MSMSScans_DepPep  default: 383 
+##  .. return default: 383 
 ## meta id:  qcMetric_EVD_MissingValues 
 ## getYAML with: order$qcMetric_EVD_MissingValues  default: 390 
 ##  .. return default: 390 
@@ -196,14 +202,14 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 9999 
 ## getYAML with: File$Parameters$enabled  default: TRUE 
 ##  .. return default: TRUE 
-## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/parameters.txt ...
-## Read 61 entries from E:\___tmp\RtmpUx3IPL/txt_20min/parameters.txt.
+## Reading file E:\___tmp\RtmpsbEGIv/txt_20min/parameters.txt ...
+## Read 61 entries from E:\___tmp\RtmpsbEGIv/txt_20min/parameters.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
 ## Starting to work on PAR: MQ Parameters ...
 ## 
-## Memory [MB] prior|after|max(diff) : 40.4 | 41.4 | 55.4 (15)
+## Memory [MB] prior|after|max(diff) : 41 | 41.9 | 55.5 (14)
 ## 
 ## Duration: 0 s
 ## 
@@ -212,8 +218,8 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 10 
 ## getYAML with: File$Summary$enabled  default: TRUE 
 ##  .. return default: TRUE 
-## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/summary.txt ...
-## Read 9 entries from E:\___tmp\RtmpUx3IPL/txt_20min/summary.txt.
+## Reading file E:\___tmp\RtmpsbEGIv/txt_20min/summary.txt ...
+## Read 9 entries from E:\___tmp\RtmpsbEGIv/txt_20min/summary.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -224,7 +230,7 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 35 
 ## Starting to work on SM: MS^2 ID rate (&quot;&gt;%1.0f&quot;) ...
 ## 
-## Memory [MB] prior|after|max(diff) : 41.7 | 42.3 | 47.4 (6)
+## Memory [MB] prior|after|max(diff) : 42.2 | 42.8 | 47.9 (6)
 ## 
 ## Duration: 0 s
 ## 
@@ -233,8 +239,8 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 4 
 ## getYAML with: File$ProteinGroups$enabled  default: TRUE 
 ##  .. return default: TRUE 
-## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/proteinGroups.txt ...
-## Read 4134 entries from E:\___tmp\RtmpUx3IPL/txt_20min/proteinGroups.txt.
+## Reading file E:\___tmp\RtmpsbEGIv/txt_20min/proteinGroups.txt ...
+## Read 4134 entries from E:\___tmp\RtmpsbEGIv/txt_20min/proteinGroups.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -242,28 +248,28 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 25 
 ## Starting to work on PG: Contaminants ...
 ## 
-## Memory [MB] prior|after|max(diff) : 49.4 | 49.6 | 54.7 (5)
+## Memory [MB] prior|after|max(diff) : 49.9 | 50.2 | 55.2 (5)
 ## 
 ## Duration: 0 s
 ## 
 ## ... PG: Contaminants  done
 ## Starting to work on PG: raw intensity ...
 ## 
-## Memory [MB] prior|after|max(diff) : 49.6 | 51.7 | 62.4 (13)
+## Memory [MB] prior|after|max(diff) : 50.2 | 52.2 | 64.8 (15)
 ## 
 ## Duration: 0 s
 ## 
 ## ... PG: raw intensity  done
 ## Starting to work on PG: LFQ intensity ...
 ## 
-## Memory [MB] prior|after|max(diff) : 51.7 | 52.3 | 64.3 (13)
+## Memory [MB] prior|after|max(diff) : 52.2 | 52.8 | 64.8 (13)
 ## 
 ## Duration: 0 s
 ## 
 ## ... PG: LFQ intensity  done
 ## Starting to work on PG: Principal Component ...
 ## 
-## Memory [MB] prior|after|max(diff) : 52.3 | 53.3 | 87.6 (35)
+## Memory [MB] prior|after|max(diff) : 52.8 | 53.8 | 87.5 (35)
 ## 
 ## Duration: 0 s
 ## 
@@ -276,7 +282,7 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 23 
 ## getYAML with: File$Evidence$PeptideCountThresh_num  default: 15000 
 ##  .. return default: 15000 
-## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/evidence.txt ...
+## Reading file E:\___tmp\RtmpsbEGIv/txt_20min/evidence.txt ...
 ## Requiring column(s) 'retention.length' to be of type 'numeric'!
 ## Requiring column(s) 'retention.time.calibration' to be of type 'numeric'!
 ## Requiring column(s) 'retention.time', 'calibrated.retention.time' to be of type 'numeric'!
@@ -292,7 +298,7 @@ r = createReport(txt_folder)</code></pre>
 ## Requiring column(s) 'mass' to be of type 'numeric'!
 ## Requiring column(s) 'ms.ms.count' to be of type 'numeric'!
 ## Keeping 17 of 62 columns!
-## Read 90398 entries from E:\___tmp\RtmpUx3IPL/txt_20min/evidence.txt.
+## Read 90398 entries from E:\___tmp\RtmpsbEGIv/txt_20min/evidence.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -301,35 +307,35 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: c(&quot;MYCOPLASMA&quot;, &quot;1&quot;) 
 ## Starting to work on EVD:Contaminant (%s) ...
 ## 
-## Memory [MB] prior|after|max(diff) : 74.1 | 74.6 | 119.1 (45)
+## Memory [MB] prior|after|max(diff) : 74.6 | 75.1 | 119.6 (45)
 ## 
 ## Duration: 1 s
 ## 
 ## ... EVD:Contaminant (%s)  done
 ## Starting to work on EVD: Pep Intensity (&quot;&gt;%1.1f&quot;) ...
 ## 
-## Memory [MB] prior|after|max(diff) : 74.6 | 84.3 | 120.8 (46)
+## Memory [MB] prior|after|max(diff) : 75.1 | 84.9 | 121.3 (46)
 ## 
 ## Duration: 0 s
 ## 
 ## ... EVD: Pep Intensity (&quot;&gt;%1.1f&quot;)  done
 ## Starting to work on EVD: Prot Count (&quot;&gt;%1.0f&quot;) ...
 ## 
-## Memory [MB] prior|after|max(diff) : 84.7 | 84.8 | 131.3 (47)
+## Memory [MB] prior|after|max(diff) : 85.2 | 85.3 | 131.3 (46)
 ## 
 ## Duration: 0 s
 ## 
 ## ... EVD: Prot Count (&quot;&gt;%1.0f&quot;)  done
 ## Starting to work on EVD: Pep Count (&quot;&gt;%1.0f&quot;) ...
 ## 
-## Memory [MB] prior|after|max(diff) : 84.8 | 84.8 | 108.6 (24)
+## Memory [MB] prior|after|max(diff) : 85.3 | 85.3 | 109.1 (24)
 ## 
 ## Duration: 0 s
 ## 
 ## ... EVD: Pep Count (&quot;&gt;%1.0f&quot;)  done
 ## Starting to work on EVD: RT Peak Width ...
 ## 
-## Memory [MB] prior|after|max(diff) : 84.8 | 84.9 | 142.8 (58)
+## Memory [MB] prior|after|max(diff) : 85.3 | 85.5 | 142.8 (58)
 ## 
 ## Duration: 1 s
 ## 
@@ -340,35 +346,35 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: auto 
 ## Starting to work on EVD: MBR Align ...
 ## 
-## Memory [MB] prior|after|max(diff) : 84.9 | 85.2 | 152.7 (68)
+## Memory [MB] prior|after|max(diff) : 85.5 | 85.8 | 152.7 (67)
 ## 
 ## Duration: 10 s
 ## 
 ## ... EVD: MBR Align  done
 ## Starting to work on EVD: MBR ID-Transfer ...
 ## 
-## Memory [MB] prior|after|max(diff) : 85.2 | 86.7 | 267 (182)
+## Memory [MB] prior|after|max(diff) : 85.8 | 87.2 | 267.2 (181)
 ## 
-## Duration: 84 s
+## Duration: 83 s
 ## 
 ## ... EVD: MBR ID-Transfer  done
 ## Starting to work on EVD: MBR auxilliary ...
 ## 
-## Memory [MB] prior|after|max(diff) : 86.7 | 92 | 233.1 (146)
+## Memory [MB] prior|after|max(diff) : 87.2 | 92.5 | 233.2 (146)
 ## 
 ## Duration: 2 s
 ## 
 ## ... EVD: MBR auxilliary  done
 ## Starting to work on EVD: Charge ...
 ## 
-## Memory [MB] prior|after|max(diff) : 92 | 92.1 | 125.4 (33)
+## Memory [MB] prior|after|max(diff) : 92.5 | 92.6 | 126 (34)
 ## 
 ## Duration: 0 s
 ## 
 ## ... EVD: Charge  done
 ## Starting to work on EVD: ID rate over RT ...
 ## 
-## Memory [MB] prior|after|max(diff) : 92 | 92.2 | 153 (61)
+## Memory [MB] prior|after|max(diff) : 92.6 | 92.8 | 153.6 (61)
 ## 
 ## Duration: 0 s
 ## 
@@ -379,7 +385,7 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 2 
 ## Starting to work on EVD: MS Cal-Pre (%1.1f) ...
 ## 
-## Memory [MB] prior|after|max(diff) : 92.2 | 95.5 | 174.8 (83)
+## Memory [MB] prior|after|max(diff) : 92.8 | 96 | 175.4 (83)
 ## 
 ## Duration: 0 s
 ## 
@@ -388,64 +394,66 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: NA 
 ## Starting to work on EVD: MS Cal-Post ...
 ## 
-## Memory [MB] prior|after|max(diff) : 95.5 | 98.6 | 172.6 (77)
+## Memory [MB] prior|after|max(diff) : 96 | 99.1 | 173.8 (78)
 ## 
 ## Duration: 0 s
 ## 
 ## ... EVD: MS Cal-Post  done
 ## Starting to work on EVD: Contaminants ...
 ## 
-## Memory [MB] prior|after|max(diff) : 98.6 | 101.6 | 173 (74)
+## Memory [MB] prior|after|max(diff) : 99.1 | 102.2 | 173.5 (74)
 ## 
 ## Duration: 0 s
 ## 
 ## ... EVD: Contaminants  done
 ## Starting to work on EVD: MS^2 Oversampling ...
 ## 
-## Memory [MB] prior|after|max(diff) : 101.6 | 101.6 | 150.3 (49)
+## Memory [MB] prior|after|max(diff) : 102.2 | 102.2 | 150.8 (49)
 ## 
 ## Duration: 0 s
 ## 
 ## ... EVD: MS^2 Oversampling  done
 ## Starting to work on EVD: Pep Missing Values ...
 ## 
-## Memory [MB] prior|after|max(diff) : 101.6 | 109 | 266.8 (165)
+## Memory [MB] prior|after|max(diff) : 102.2 | 109.5 | 267.2 (165)
 ## 
 ## Duration: 2 s
 ## 
 ## ... EVD: Pep Missing Values  done
 ## getYAML with: File$MsMs$enabled  default: TRUE 
 ##  .. return default: TRUE 
-## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/msms.txt ...
+## Reading file E:\___tmp\RtmpsbEGIv/txt_20min/msms.txt ...
 ## Requiring column(s) 'missed.cleavages' to be of type 'numeric'!
 ## Requiring column(s) 'evidence.id' to be of type 'numeric'!
 ## Keeping 2 of 60 columns!
-## Read 86086 entries from E:\___tmp\RtmpUx3IPL/txt_20min/msms.txt.
+## Read 86086 entries from E:\___tmp\RtmpsbEGIv/txt_20min/msms.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
 ## Adding fc.raw.file column ... done
 ## Starting to work on MSMS: MS^2 Cal (%s) ...
 ## 
-## Memory [MB] prior|after|max(diff) : 205.5 | 209.2 | 236.3 (31)
+## Memory [MB] prior|after|max(diff) : 206.1 | 209.8 | 238.7 (33)
 ## 
 ## Duration: 1 s
 ## 
 ## ... MSMS: MS^2 Cal (%s)  done
 ## Starting to work on MSMS: %s ...
 ## 
-## Memory [MB] prior|after|max(diff) : 209.2 | 209.2 | 243.7 (34)
+## Memory [MB] prior|after|max(diff) : 209.8 | 209.8 | 244.2 (34)
 ## 
 ## Duration: 0 s
 ## 
 ## ... MSMS: %s  done
 ## getYAML with: File$MsMsScans$enabled  default: TRUE 
 ##  .. return default: TRUE 
-## Reading file E:\___tmp\RtmpUx3IPL/txt_20min/msmsScans.txt ...
+## Reading file E:\___tmp\RtmpsbEGIv/txt_20min/msmsScans.txt ...
 ## Requiring column(s) 'ion.injection.time' to be of type 'numeric'!
 ## Requiring column(s) 'retention.time' to be of type 'numeric'!
+## WARNING: Could not find column regex '^dp.aa$' using case-INsensitive matching.
+## WARNING: Could not find column regex '^dp.modification$' using case-INsensitive matching.
 ## Keeping 2 of 41 columns!
-## Read 201567 entries from E:\___tmp\RtmpUx3IPL/txt_20min/msmsScans.txt.
+## Read 201567 entries from E:\___tmp\RtmpsbEGIv/txt_20min/msmsScans.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -454,37 +462,44 @@ r = createReport(txt_folder)</code></pre>
 ##  .. return default: 10 
 ## Starting to work on MS^2*Scans: TopN over RT ...
 ## 
-## Memory [MB] prior|after|max(diff) : 121.9 | 123.2 | 233.5 (112)
+## Memory [MB] prior|after|max(diff) : 125.5 | 126.9 | 236.6 (111)
 ## 
 ## Duration: 1 s
 ## 
 ## ... MS^2*Scans: TopN over RT  done
 ## Starting to work on MS^2*Scans: Ion Inj Time ...
 ## 
-## Memory [MB] prior|after|max(diff) : 123.2 | 123.4 | 150.8 (28)
+## Memory [MB] prior|after|max(diff) : 126.8 | 127 | 154.4 (28)
 ## 
 ## Duration: 0 s
 ## 
 ## ... MS^2*Scans: Ion Inj Time  done
+## Starting to work on MS^2*Scans: Intensity ...
+## 
+## Memory [MB] prior|after|max(diff) : 127 | 134.2 | 217.5 (91)
+## 
+## Duration: 0 s
+## 
+## ... MS^2*Scans: Intensity  done
 ## Starting to work on MS^2*Scans: TopN high ...
 ## 
-## Memory [MB] prior|after|max(diff) : 123.3 | 123.4 | 137.8 (14)
+## Memory [MB] prior|after|max(diff) : 134.2 | 134.2 | 148.6 (14)
 ## 
 ## Duration: 0 s
 ## 
 ## ... MS^2*Scans: TopN high  done
 ## Starting to work on MS^2*Scans: TopN ID over N ...
 ## 
-## Memory [MB] prior|after|max(diff) : 123.4 | 123.4 | 146.4 (23)
+## Memory [MB] prior|after|max(diff) : 134.2 | 134.2 | 157.3 (23)
 ## 
 ## Duration: 0 s
 ## 
 ## ... MS^2*Scans: TopN ID over N  done
 ## [1] &quot;#Metrics: &quot;
-## [1] 30
+## [1] 32
 ## Starting to work on Average Overall Quality ...
 ## 
-## Memory [MB] prior|after|max(diff) : 121.9 | 121.9 | 123.1 (1)
+## Memory [MB] prior|after|max(diff) : 134.2 | 134.3 | 135.4 (1)
 ## 
 ## Duration: 0 s
 ## 
@@ -496,11 +511,22 @@ r = createReport(txt_folder)</code></pre>
 ## getYAML with: PTXQC$PlainPDF$AddPageNumbers  default: on 
 ##  .. return default: on 
 ## Creating Report file ...</code></pre>
-<pre><code>## processing file: PTXQC_report_template.Rmd
-## output file: PTXQC_report_template.knit.md</code></pre>
-<pre><code>## &quot;C:/Program Files/RStudio/bin/pandoc/pandoc&quot; +RTS -K512m -RTS PTXQC_report_template.utf8.md --to html --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash-implicit_figures --output &quot;E:\___tmp\RtmpUx3IPL/txt_20min/report_v0.80.14_txt_20min.html&quot; --smart --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --template &quot;K:\R\win-library\3.1\rmarkdown\rmd\h\default.html&quot; --number-sections --variable &quot;theme:bootstrap&quot; --include-in-header &quot;E:\___tmp\RtmpUx3IPL\rmarkdown-str203c1c0d322.html&quot; --no-highlight --variable &quot;highlightjs=K:\R\win-library\3.1\rmarkdown\rmd\h\highlight&quot;</code></pre>
+<pre><code>## processing file: PTXQC_report_template.Rmd</code></pre>
+<pre><code>## Warning: Removed 1342 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: position_dodge requires non-overlapping x intervals</code></pre>
+<pre><code>## Warning: Removed 85 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: position_dodge requires non-overlapping x intervals</code></pre>
+<pre><code>## Warning: Removed 125 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: position_dodge requires non-overlapping x intervals</code></pre>
+<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 719 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 779 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 720 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## Warning: Removed 719 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>## output file: PTXQC_report_template.knit.md</code></pre>
+<pre><code>## &quot;C:/Program Files/RStudio/bin/pandoc/pandoc&quot; +RTS -K512m -RTS PTXQC_report_template.utf8.md --to html --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash-implicit_figures --output &quot;E:\___tmp\RtmpsbEGIv/txt_20min/report_v0.82.2_txt_20min.html&quot; --smart --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --template &quot;K:\R\win-library\3.1\rmarkdown\rmd\h\default.html&quot; --number-sections --variable &quot;theme:bootstrap&quot; --include-in-header &quot;E:\___tmp\RtmpsbEGIv\rmarkdown-str43486a30640b.html&quot; --no-highlight --variable &quot;highlightjs=K:\R\win-library\3.1\rmarkdown\rmd\h\highlight&quot;</code></pre>
 <pre><code>## 
-## Output created: E:\___tmp\RtmpUx3IPL/txt_20min/report_v0.80.14_txt_20min.html</code></pre>
+## Output created: E:\___tmp\RtmpsbEGIv/txt_20min/report_v0.82.2_txt_20min.html</code></pre>
 <pre><code>## [[1]]</code></pre>
 <pre><code>## 
 ## [[1]]</code></pre>
@@ -755,6 +781,8 @@ r = createReport(txt_folder)</code></pre>
 ## [[1]]</code></pre>
 <pre><code>## 
 ## [[1]]</code></pre>
+<pre><code>## 
+## [[1]]</code></pre>
 <pre><code>## Warning: Removed 719 rows containing non-finite values (stat_boxplot).</code></pre>
 <pre><code>## 
 ## [[1]]</code></pre>
@@ -766,6 +794,7 @@ r = createReport(txt_folder)</code></pre>
 <pre><code>## 
 ## [[1]]</code></pre>
 <pre><code>## 
+## list()
 ## [[1]]</code></pre>
 <pre><code>## 
 ## $missingCul</code></pre>
@@ -792,14 +821,14 @@ r = createReport(txt_folder)</code></pre>
 ##  done
 ## Report file created at
 ## 
-##     E:\___tmp\RtmpUx3IPL/txt_20min/report_v0.80.14_txt_20min.*
+##     E:\___tmp\RtmpsbEGIv/txt_20min/report_v0.82.2_txt_20min.*
 ## 
 ## 
 ## 
-## Time elapsed: 3.1 min</code></pre>
+## Time elapsed: 3.2 min</code></pre>
 <pre class="r"><code>cat(paste0(&quot;\nReport generated as '&quot;, r$report_file, &quot;'\n\n&quot;))</code></pre>
 <pre><code>## 
-## Report generated as 'E:\___tmp\RtmpUx3IPL/txt_20min/report_v0.80.14_txt_20min'</code></pre>
+## Report generated as 'E:\___tmp\RtmpsbEGIv/txt_20min/report_v0.82.2_txt_20min'</code></pre>
 </div>
 <div id="generate-a-customized-report" class="section level2">
 <h2>Generate a customized report</h2>

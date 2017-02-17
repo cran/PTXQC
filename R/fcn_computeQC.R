@@ -80,10 +80,10 @@ createReport = function(txt_folder, yaml_obj = list())
   ####
   ####  prepare the metrics
   ####
-  if (!DEBUG_PTXQC) {
-    lst_qcMetrics_str = ls(name = getNamespace("PTXQC"), pattern="qcMetric_") 
-  } else {
+  if (DEBUG_PTXQC) {
     lst_qcMetrics_str = ls(sys.frame(which = 0), pattern="qcMetric_") ## executed outside of package, i.e. not loaded...
+  } else {
+    lst_qcMetrics_str = ls(name = getNamespace("PTXQC"), pattern="qcMetric_") 
   }
   if (length(lst_qcMetrics_str) == 0) stop("computeReport(): No metrics found! Very weird!")
   lst_qcMetrics = sapply(lst_qcMetrics_str, function(m) {
@@ -118,6 +118,8 @@ createReport = function(txt_folder, yaml_obj = list())
   ## reorder metrics (again; after param update)
   lst_qcMetrics_ord = lst_qcMetrics[df.meta$.id]
   
+  ## write out a preliminary YAML file (so users can disable metrics, if they fail)
+  yc$writeYAML(fh_out$yaml_file)
   
   ######
   ######  parameters.txt ...
@@ -604,7 +606,11 @@ if (enabled_msmsscans)
                                         numeric = "^retention.time$", 
                                         "^Identified", 
                                         "^Scan.event.number", 
-                                        "^Raw.file"),
+                                        "^total.ion.current",
+                                        "^base.peak.intensity",
+                                        "^Raw.file",
+                                        "^dp.aa$",
+                                        "^dp.modification$"),
                          check_invalid_lines = FALSE)
   
   param_name_MSMSScans_ionInjThresh = "File$MsMsScans$IonInjectionThresh_num"
@@ -635,6 +641,11 @@ if (enabled_msmsscans)
     lst_qcMetrics[["qcMetric_MSMSScans_IonInjTime"]]$setData(d_msmsScan, param_MSMSScans_ionInjThresh)
 
     ##
+    ## MS/MS intensity (TIC and base peak)
+    ##
+    lst_qcMetrics[["qcMetric_MSMSScans_MSMSIntensity"]]$setData(d_msmsScan)
+    
+    ##
     ## TopN counts
     ##
     lst_qcMetrics[["qcMetric_MSMSScans_TopN"]]$setData(d_msmsScan)
@@ -643,7 +654,14 @@ if (enabled_msmsscans)
     ## Scan event: % identified
     ##
     lst_qcMetrics[["qcMetric_MSMSScans_TopNID"]]$setData(d_msmsScan)
-
+    
+    ##
+    ## Dependent peptides (no score)
+    ##
+    if ("dp.modification" %in% colnames(d_msmsScan)) {
+      lst_qcMetrics[["qcMetric_MSMSScans_DepPep"]]$setData(d_msmsScan)
+    }
+    
   } ## end MSMSscan from MQ > 1.0.13
   
   ## save RAM: msmsScans.txt is not required any longer

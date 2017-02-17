@@ -10,7 +10,7 @@
 
 <meta name="author" content="Chris Bielow chris.bielow@mdc-berlin.de" />
 
-<meta name="date" content="2016-10-13" />
+<meta name="date" content="2017-02-17" />
 
 <title>Customizing PTXQC reports</title>
 
@@ -64,7 +64,7 @@ img {
 <div id="header">
 <h1 class="title">Customizing PTXQC reports</h1>
 <h4 class="author"><em>Chris Bielow <a href="mailto:chris.bielow@mdc-berlin.de">chris.bielow@mdc-berlin.de</a></em></h4>
-<h4 class="date"><em>2016-10-13</em></h4>
+<h4 class="date"><em>2017-02-17</em></h4>
 </div>
 
 
@@ -75,19 +75,21 @@ img {
 <li>set optimal values for the PTXQC metrics and scoring functions (usually tighly connected to the data and MS instrument)</li>
 <li>report length: number of metrics shown in the report or partial evaluation of the txt-folder</li>
 </ul>
-<p>The first point can partially be addressed via a mqpar.xml file (see below).</p>
-<p>However, not all thresholds are known or even interesting to MaxQuant, e.g. the number of expected proteins. For this, PTXQC comes with a YAML config file (see below). This file also addresses the report length.</p>
+<p>The first point can partially be addressed via a <strong>mqpar.xml file</strong>. However, not all thresholds are known or even interesting to MaxQuant, e.g. the number of expected proteins. For this, PTXQC comes with a <strong>YAML config file</strong>. This file also addresses the report length.</p>
 <div id="automatically-importing-maxquant-parameters-via-mqpar.xml" class="section level2">
 <h2>Automatically importing MaxQuant parameters via mqpar.xml</h2>
 <p>Some settings in MaxQuant, e.g. the MS/MS search tolerance are important for PTXQC in order to correctly score the mass recalibration or show expected error margins.</p>
-<p>So how does PTXQC know about the settings used during the MaxQuant run? Copy the <code>mqpar.xml</code> which MaxQuant generated in the analysis directory into your txt folder, e.g. <code>c:\MQ_Diabetes_study\mqpar.xml</code> -&gt; <code>c:\MQ_Diabetes_study\combined\txt\mqpar.xml</code>. This will enable PTXQC to extract some parameter settings and results in more accurate reports. You will see a warning message during report generation if <code>mqpar.xml</code> is missing. The FAQ vignette has additional information on why this manual copying is sensefull.</p>
+<p>So how does PTXQC know about the settings used during the MaxQuant run? Copy the <code>mqpar.xml</code> which MaxQuant generated in the analysis directory into your txt folder, e.g. <code>c:\MQ_Diabetes_study\mqpar.xml</code> -&gt; <code>c:\MQ_Diabetes_study\combined\txt\mqpar.xml</code>. This will enable PTXQC to extract some parameter settings and results in more accurate reports. You will see a warning message during report generation if <code>mqpar.xml</code> is missing. The FAQ vignette has additional information on why this manual copying is senseful.</p>
 <p>Alternatively, you can set the MaxQuant parameters manually in the YAML file (see next section) to match your MaxQuant configuration.</p>
 </div>
 <div id="more-customization-using-the-yaml-config-file" class="section level2">
 <h2>More customization using the YAML config file</h2>
 <p>A configuration file allows you to enable/disable certain plots, and to modify most target thresholds used for the scoring metrics and within plots, e.g. the number of proteins you expect. This will differ by platform and instrument; so adapt it to your needs. The defaults are meant for a Thermo Orbitrap Velos, a 4h LC gradient for a complex matrix (e.g. human cells). Disabling certain report sections will decrease report size and hide metrics which you may not need. The time required to create the report will also reduce, but usually this is not a bottleneck.</p>
 <p>PTXQC uses YAML format for its parameter configuration. YAML is short for ‘YAML Aint Markup Language’; yes, it’s an endless recursion. There is a nice tutorial for YAML at [<a href="http://rhnh.net/2011/01/31/yaml-tutorial" class="uri">http://rhnh.net/2011/01/31/yaml-tutorial</a>] – or just Google to find more. Also, any PTXQC YAML file will start with a comment section which explains the format.</p>
-<p>Before you run PTXQC, look at the <code>report_*.yaml</code> file within your txt folder. If you did not run PTXQC before on this folder, you can take any other YAML config file or run PTXQC with default settings (see above) to create such a file. Edit the YAML file as you desire using a text editor of your choice (e.g. Notepad++). <strong>Each YAML file has a leading comment section which will describe the basics of how YAML looks like and what you should/not change.</strong></p>
+<p>PTXQC will create a <code>report_*.yaml</code> file within your txt folder upon its first invocation. If you did not run PTXQC before on this folder, you can take any other YAML config file or run PTXQC with default settings (see above) to create such a file. Edit the YAML file as you desire using a text editor of your choice (e.g. Notepad++). <strong>Each YAML file has a leading comment section which will describe the basics of how YAML looks like and what you should/not change.</strong></p>
+<blockquote>
+<p>Note: PTXQC will only read the YAML file which <strong>matches its own version exactly</strong>, i.e. <code>report_v0.82.1.yaml</code> will be ignored if PTXQC has version <code>0.83.1</code> to avoid compatibility problems. A new YAML file matching the current PTXQC version will automatically be generated. If you want to use your old settings, rename the file manually.</p>
+</blockquote>
 <p>The YAML shown below is shortened and lacks parts of the introductory comment section. But in general, the YAML file will look like this:</p>
 <pre><code># This is a configuration file for PTXQC reporting.
 # One such file is generated automatically every time a report PDF is created.
@@ -102,6 +104,13 @@ PTXQC:
     extended: yes
   NameLengthMax_num: 10.0
   AddPageNumbers: 'on'
+order:
+  qcMetric_PAR: 1.0
+  qcMetric_PG_PCA: 3.0
+  qcMetric_EVD_Top5Cont: 10.0
+  qcMetric_PG_Ratio: 19.0
+  qcMetric_EVD_UserContaminant: 20.0
+  &lt;&lt; more metrics here... &gt;&gt;
 File:
   Parameters:
     enabled: yes
@@ -116,6 +125,7 @@ File:
     ProteinCountThresh_num: 3500.0
     PeptideCountThresh_num: 15000.0
     MatchBetweenRuns_wA: auto</code></pre>
+<p>To disable certain metrics/plots, just change the <strong>order</strong> of the metric in question to a <strong>negative</strong> value, e.g. <code>qcMetric_PG_PCA: -3.0</code>, will disable the PCA plot. This is helpful to disable uninteresting metrics, but also a temporary solution if your PC cannot cope with RAM demands of PTXQC or a metric is broken (you should open a bug report in this case nevertheless).</p>
 </div>
 <div id="rename-raw-files-in-the-report" class="section level2">
 <h2>Rename Raw files in the report</h2>
