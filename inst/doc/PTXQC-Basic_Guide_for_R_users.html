@@ -11,7 +11,7 @@
 
 <meta name="author" content="Chris Bielow chris.bielow@fu-berlin.de" />
 
-<meta name="date" content="2017-05-04" />
+<meta name="date" content="2017-06-09" />
 
 <title>Basic R-Usage Guide for PTXQC</title>
 
@@ -119,7 +119,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Basic R-Usage Guide for PTXQC</h1>
 <h4 class="author"><em>Chris Bielow <a href="mailto:chris.bielow@fu-berlin.de">chris.bielow@fu-berlin.de</a></em></h4>
-<h4 class="date"><em>2017-05-04</em></h4>
+<h4 class="date"><em>2017-06-09</em></h4>
 
 </div>
 
@@ -136,7 +136,7 @@ $(document).ready(function () {
 <p>This is the most simple invokation of PTXQC::createReport().</p>
 <pre class="r"><code>require(PTXQC)</code></pre>
 <pre><code>## Loading required package: PTXQC</code></pre>
-<pre><code>## Loading package PTXQC (version 0.82.5)</code></pre>
+<pre><code>## Loading package PTXQC (version 0.82.6)</code></pre>
 <pre class="r"><code>## the next require() is needed to prevent a spurious error in certain R versions (might be a bug in R or a package)
 ## error message is:
 ##    Error in Scales$new : could not find function &quot;loadMethod&quot;
@@ -310,20 +310,20 @@ if (1) {
 ## meta id:  qcMetric_AverageQualOverall 
 ## getYAML with: order$qcMetric_AverageQualOverall  default: 9999 
 ##  .. return default: 9999 
-## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/parameters.txt ...
-## Read 61 entries from C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/parameters.txt.
+## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/parameters.txt ...
+## Read 61 entries from C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/parameters.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
 ## Starting to work on PAR: MQ Parameters ...
 ## 
-## Memory [MB] prior|after|max(diff) : 40.7 | 41.7 | 69.7 (29)
+## Memory [MB] prior|after|max(diff) : 40.8 | 41.7 | 69.7 (29)
 ## 
 ## Duration: 0 s
 ## 
 ## ... PAR: MQ Parameters  done
-## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/summary.txt ...
-## Read 9 entries from C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/summary.txt.
+## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/summary.txt ...
+## Read 9 entries from C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/summary.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -335,8 +335,8 @@ if (1) {
 ## Duration: 0 s
 ## 
 ## ... SM: MS^2 ID rate (&quot;&gt;%1.0f&quot;)  done
-## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/proteinGroups.txt ...
-## Read 4134 entries from C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/proteinGroups.txt.
+## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/proteinGroups.txt ...
+## Read 4134 entries from C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/proteinGroups.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -368,7 +368,7 @@ if (1) {
 ## Duration: 0 s
 ## 
 ## ... PG: Principal Component  done
-## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/evidence.txt ...
+## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/evidence.txt ...
 ## Requiring column(s) 'retention.length' to be of type 'numeric'!
 ## Requiring column(s) 'retention.time.calibration' to be of type 'numeric'!
 ## Requiring column(s) 'retention.time', 'calibrated.retention.time' to be of type 'numeric'!
@@ -384,7 +384,7 @@ if (1) {
 ## Requiring column(s) 'mass' to be of type 'numeric'!
 ## Requiring column(s) 'ms.ms.count' to be of type 'numeric'!
 ## Keeping 17 of 62 columns!
-## Read 90398 entries from C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/evidence.txt.
+## Read 90398 entries from C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/evidence.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
@@ -412,7 +412,7 @@ if (1) {
 ## ... EVD: Prot Count (&quot;&gt;%1.0f&quot;)  done
 ## Starting to work on EVD: Pep Count (&quot;&gt;%1.0f&quot;) ...
 ## 
-## Memory [MB] prior|after|max(diff) : 87.3 | 87.4 | 110.7 (23)
+## Memory [MB] prior|after|max(diff) : 87.3 | 87.4 | 110.8 (24)
 ## 
 ## Duration: 0 s
 ## 
@@ -433,9 +433,9 @@ if (1) {
 ## ... EVD: MBR Align  done
 ## Starting to work on EVD: MBR ID-Transfer ...
 ## 
-## Memory [MB] prior|after|max(diff) : 89.1 | 89.5 | 263.4 (174)
+## Memory [MB] prior|after|max(diff) : 89.1 | 89.6 | 263.3 (174)
 ## 
-## Duration: 40 s
+## Duration: 41 s
 ## 
 ## ... EVD: MBR ID-Transfer  done
 ## Starting to work on EVD: MBR auxilliary ...
@@ -495,18 +495,18 @@ if (1) {
 ## Duration: 1 s
 ## 
 ## ... EVD: Pep Missing Values  done
-## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/msms.txt ...
+## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/msms.txt ...
 ## Requiring column(s) 'missed.cleavages' to be of type 'numeric'!
 ## Requiring column(s) 'evidence.id' to be of type 'numeric'!
 ## Keeping 2 of 60 columns!
-## Read 86086 entries from C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/msms.txt.
+## Read 86086 entries from C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/msms.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
 ## Adding fc.raw.file column ... done
 ## Starting to work on MSMS: MS^2 Cal (%s) ...
 ## 
-## Memory [MB] prior|after|max(diff) : 209.1 | 212.8 | 288.7 (80)
+## Memory [MB] prior|after|max(diff) : 209.1 | 212.8 | 289.4 (80)
 ## 
 ## Duration: 0 s
 ## 
@@ -518,27 +518,27 @@ if (1) {
 ## Duration: 0 s
 ## 
 ## ... MSMS: %s  done
-## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/msmsScans.txt ...
+## Reading file C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/msmsScans.txt ...
 ## Requiring column(s) 'ion.injection.time' to be of type 'numeric'!
 ## Requiring column(s) 'retention.time' to be of type 'numeric'!
 ## WARNING: Could not find column regex '^dp.aa$' using case-INsensitive matching.
 ## WARNING: Could not find column regex '^dp.modification$' using case-INsensitive matching.
 ## Keeping 2 of 41 columns!
-## Read 201567 entries from C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/msmsScans.txt.
+## Read 201567 entries from C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/msmsScans.txt.
 ## Updating colnames
 ## Simplifying contaminants
 ## Simplifying reverse
 ## Adding fc.raw.file column ... done
 ## Starting to work on MS^2*Scans: TopN over RT ...
 ## 
-## Memory [MB] prior|after|max(diff) : 128.7 | 130.3 | 231.3 (103)
+## Memory [MB] prior|after|max(diff) : 128.7 | 130.5 | 231.3 (103)
 ## 
 ## Duration: 1 s
 ## 
 ## ... MS^2*Scans: TopN over RT  done
 ## Starting to work on MS^2*Scans: Ion Inj Time ...
 ## 
-## Memory [MB] prior|after|max(diff) : 130.2 | 130.8 | 146.7 (16)
+## Memory [MB] prior|after|max(diff) : 130.3 | 130.8 | 146.8 (16)
 ## 
 ## Duration: 0 s
 ## 
@@ -546,7 +546,7 @@ if (1) {
 ## Starting to work on MS^2*Scans: Intensity ...</code></pre>
 <pre><code>## Warning: Ignoring unknown aesthetics: width</code></pre>
 <pre><code>## 
-## Memory [MB] prior|after|max(diff) : 130.5 | 138.1 | 218.1 (88)
+## Memory [MB] prior|after|max(diff) : 130.5 | 138.2 | 218.1 (88)
 ## 
 ## Duration: 0 s
 ## 
@@ -560,7 +560,7 @@ if (1) {
 ## ... MS^2*Scans: TopN high  done
 ## Starting to work on MS^2*Scans: TopN ID over N ...
 ## 
-## Memory [MB] prior|after|max(diff) : 137.9 | 138.1 | 159.8 (22)
+## Memory [MB] prior|after|max(diff) : 138 | 138.1 | 159.8 (22)
 ## 
 ## Duration: 0 s
 ## 
@@ -569,7 +569,7 @@ if (1) {
 ## [1] 32
 ## Starting to work on Average Overall Quality ...
 ## 
-## Memory [MB] prior|after|max(diff) : 138 | 138 | 139.1 (1)
+## Memory [MB] prior|after|max(diff) : 138.1 | 138.1 | 139.1 (1)
 ## 
 ## Duration: 0 s
 ## 
@@ -588,9 +588,9 @@ if (1) {
 <pre><code>## Warning: Removed 720 rows containing non-finite values (stat_bin).</code></pre>
 <pre><code>## Warning: Removed 719 rows containing non-finite values (stat_bin).</code></pre>
 <pre><code>## output file: PTXQC_report_template.knit.md</code></pre>
-<pre><code>## &quot;C:/Program Files/RStudio/bin/pandoc/pandoc&quot; +RTS -K512m -RTS PTXQC_report_template.utf8.md --to html --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output pandoc28402c7371b8.html --smart --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --template &quot;C:\Users\bielow\Documents\R\win-library\3.3\rmarkdown\rmd\h\default.html&quot; --no-highlight --variable highlightjs=1 --number-sections --variable &quot;theme:bootstrap&quot; --include-in-header &quot;C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm\rmarkdown-str28403ccd28eb.html&quot;</code></pre>
+<pre><code>## &quot;C:/Program Files/RStudio/bin/pandoc/pandoc&quot; +RTS -K512m -RTS PTXQC_report_template.utf8.md --to html --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output pandoc19201ed6510d.html --smart --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --template &quot;C:\Users\bielow\Documents\R\win-library\3.3\rmarkdown\rmd\h\default.html&quot; --no-highlight --variable highlightjs=1 --number-sections --variable &quot;theme:bootstrap&quot; --include-in-header &quot;C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E\rmarkdown-str192014b831ba.html&quot;</code></pre>
 <pre><code>## 
-## Output created: C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/report_v0.82.5_txt_20min.html</code></pre>
+## Output created: C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/report_v0.82.6_txt_20min.html</code></pre>
 <pre><code>## [[1]]</code></pre>
 <pre><code>## 
 ## [[1]]</code></pre>
@@ -990,14 +990,14 @@ if (1) {
 ##  done
 ## Report file created at
 ## 
-##     C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/report_v0.82.5_txt_20min.*
+##     C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/report_v0.82.6_txt_20min.*
 ## 
 ## 
 ## 
 ## Time elapsed: 1.6 min</code></pre>
 <pre class="r"><code>cat(paste0(&quot;\nReport generated as '&quot;, r$report_file, &quot;'\n\n&quot;))</code></pre>
 <pre><code>## 
-## Report generated as 'C:\Users\bielow\AppData\Local\Temp\RtmpcT0dcm/txt_20min/report_v0.82.5_txt_20min'</code></pre>
+## Report generated as 'C:\Users\bielow\AppData\Local\Temp\RtmpoBm56E/txt_20min/report_v0.82.6_txt_20min'</code></pre>
 </div>
 <div id="generate-a-customized-report" class="section level2">
 <h2>Generate a customized report</h2>
