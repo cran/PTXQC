@@ -38,8 +38,6 @@ Heatmap score [EVD: Contaminant <name>]: boolean score, i.e. 0% (fail) if the in
 ",
     workerFcn = function(.self, df_evd, df_pg, lst_contaminants)
     {
-      #df_evd = d_evd
-      #df_pg = d_pg
       #lst_contaminants = yaml_contaminants
       ## completeness check
       ## PG is either missing, or has the correct data
@@ -148,13 +146,14 @@ Heatmap score [EVD: Contaminant <name>]: boolean score, i.e. 0% (fail) if the in
             if (l$cont_data$above.thresh == FALSE ||
                 is.null(l$cont_scoreECDF))
             {
-              return(NULL)
+              return(NULL) ## some entries might be skipped (not significant)
             } 
             p = plot_ContUserScore(l$cont_scoreECDF, l$cont_data$fc.raw.file, l$cont_data$score_KS)
             #print(p)
             return(p)
           })
-          lpl = append(lpl, pl_andr)
+          pl_andr_nonNull = compact(pl_andr) ## remove 'NULL' entries from plot list
+          lpl = append(lpl, pl_andr_nonNull)
           
           ## add heatmap column
           cname = sprintf(.self$qcName, ca)
@@ -705,8 +704,11 @@ qcMetric_EVD_Charge =  setRefClass(
   contains = "qcMetric",
   methods = list(initialize=function() {  callSuper(    
     helpTextTemplate = 
-      "Charge distribution per Raw file. Should be dominated by charge 2 
-(one N-terminal and one at tryptic C-terminal R or K residue) and have a similar distribution across Raw files.
+      "Charge distribution per Raw file. For typtic digests, peptides of charge 2 
+(one N-terminal and one at tryptic C-terminal R or K residue) should be dominant.
+Ionization issues (voltage?), in-source fragmentation, missed cleavages and buffer irregularities can 
+cause a shift (see [http://onlinelibrary.wiley.com/doi/10.1002/mas.21544/abstract](Bittremieux 2017, DOI: 10.1002/mas.21544) ).
+The charge distribution should be similar across Raw files.
 Consistent charge distribution is paramount for comparable 3D-peak intensities across samples.
 
 Heatmap score [EVD: Charge]: Deviation of the charge 2 proportion from a representative Raw file ('qualMedianDist' function).
