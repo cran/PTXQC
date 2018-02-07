@@ -1206,3 +1206,28 @@ peakWidthOverTime = function(data, RT_bin_width = 2)
   return(retLStats)
 }
 
+#' Get all currently available metrics
+#'  
+#' @param DEBUG_PTXQC Use qc objects from the package (FALSE) or from environment (TRUE/DEBUG)
+#' @return List of matric objects
+#' 
+getMetricsObjects = function(DEBUG_PTXQC = FALSE)
+{
+  if (DEBUG_PTXQC) {
+    lst_qcMetrics_str = ls(sys.frame(which = 0), pattern="qcMetric_") ## executed outside of package, i.e. not loaded...
+  } else {
+    lst_qcMetrics_str = ls(name = getNamespace("PTXQC"), pattern="qcMetric_") 
+  }
+  if (length(lst_qcMetrics_str) == 0) stop("getMetricsObjects(): No metrics found! Very weird!")
+  
+  lst_qcMetrics = sapply(lst_qcMetrics_str, function(m) {
+    q = get(m)
+    if (class(q) %in% "refObjectGenerator"){
+      return(q$new())
+    }
+    return(NULL)
+  })
+  return(lst_qcMetrics)
+}
+
+

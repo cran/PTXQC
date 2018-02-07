@@ -51,6 +51,12 @@ getQCHeatMap = function(lst_qcMetrics, raw_file_mapping)
   ## final heat map of QC metrics
   df.QCM = Reduce(function(a,b) merge(a,b,all = TRUE), lst.QCM)
 
+  ## no metrics...  
+  if (is.null(df.QCM))
+  {
+    p = ggText("HeatMap unavailable", "No metrics were computed (not enough data)");
+    return(list(plot = p, table = NULL))
+  }
   ## create summary column
   lst_qcMetrics[["qcMetric_AverageQualOverall"]]$setData(df.QCM)
   ## ... add it
@@ -114,7 +120,8 @@ getQCHeatMap = function(lst_qcMetrics, raw_file_mapping)
   })
   
   p = ggplot(QCM_final.m, aes_string(y="fc.raw.file", x="variable2"))
-  if (any(is.na(QCM_final.m$value))) {
+  if (any(is.na(QCM_final.m$value)))
+  {
     p = p + geom_tile(aes_string(fill = "value", colour = "dummy_col")) +
       scale_colour_manual(name="Missing", values=c("NA" = "grey50")) +
       guides(colour = guide_legend(override.aes = list(fill = 'grey50')))

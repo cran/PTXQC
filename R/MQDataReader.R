@@ -72,6 +72,10 @@ MQDataReader$new <- function(.)
 #'  basepeak.intensity        base.peak.intensity
 #' }
 #' 
+#' We also correct 'reporter.intensity.*' naming issues to MQ 1.6 convention, when 'reporter.intensity.not.corrected' is present.
+#' MQ 1.5 uses: reporter.intensity.X and reporter.intensity.not.corrected.X
+#' MQ 1.6 uses: reporter.intensity.X and reporter.intensity.corrected.X       
+#'
 #' Note: you must find a regex which matches both versions, or explicitly add both terms if you are requesting only a subset
 #'       of columns!
 #' 
@@ -205,6 +209,17 @@ MQDataReader$readMQ <- function(., file, filter="", type="pg", col_subset=NA, ad
   cn[cn=="mass.deviations"] = "mass.deviations..da."
   ## MQ 1.5 uses 'potential.contaminant' instead of 'contaminant'
   cn[cn=="potential.contaminant"] = "contaminant"
+  ## MQ 1.5 uses     : reporter.intensity.X and reporter.intensity.not.corrected.X
+  ## whereas 1.6 has : reporter.intensity.X and reporter.intensity.corrected.X
+  ## we rename to 1.6 convention:
+  if (sum(grepl("reporter.intensity.not.corrected", cn)) > 0)
+  {
+    idx_nc = grep("reporter.intensity.not.corrected", cn);
+    idx_c = grep("reporter.intensity.[0-9]", cn);
+    cn[idx_nc] = gsub(".not.corrected", "", cn[idx_nc]);
+    cn[idx_c] = gsub(".intensity", ".intensity.corrected", cn[idx_c]);
+  }
+  
   colnames(.$mq.data) = cn
   
   
@@ -496,6 +511,7 @@ MQDataReader$plotNameMapping <- function(.)
 #'
 #' The internal structure \code{raw_file_mapping} is written to the
 #' file specified.
+#' File is only created if mapping exists (in .$raw_file_mapping).
 #' 
 #' @param filename  Target filename to create.
 #' @return Returns NULL.
@@ -505,6 +521,8 @@ MQDataReader$plotNameMapping <- function(.)
 MQDataReader$writeMappingFile = function(., filename)
 {
   dfs = data.frame(orig.Name = .$raw_file_mapping$from, new.Name = .$raw_file_mapping$to)
+  if (nrow(dfs) == 0) return(NULL)
+  
   if ("best.effort" %in% colnames(.$raw_file_mapping)) {
     dfs$best.effort = .$raw_file_mapping[, "best.effort"]
   }
@@ -546,6 +564,7 @@ MQDataReader$readMappingFile = function(., filename)
 {
   if (file.exists(filename))
   {
+    message(paste0("Reading mapping file '", filename, "'\n"))
     dfs = read.delim(filename, comment.char="#", stringsAsFactors = FALSE)
     colnames(dfs) = gsub("_", ".", colnames(dfs)) ## legacy support for old "best_effort" column (now "best.effort")
     req_cols = c(from = "orig.Name", to = "new.Name")

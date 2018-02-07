@@ -1,4 +1,6 @@
 
+#####################################################################
+
 qcMetric_EVD_UserContaminant =  setRefClass(
   "qcMetric_EVD_UserContaminant",
   contains = "qcMetric",
@@ -187,7 +189,7 @@ qcMetric_EVD_PeptideInt =  setRefClass(
   contains = "qcMetric",
   methods = list(initialize=function() {  callSuper(    
     helpTextTemplate = 
-      "Peptide intensity per Raw file from evidence.txt.
+      "Peptide precursor intensity per Raw file from evidence.txt.
 Low peptide intensity usually goes hand in hand with low MS/MS identifcation rates and unfavourable signal/noise ratios,
 which makes signal detection harder. Also instrument acquisition time increases for trapping instruments.
 
@@ -239,6 +241,122 @@ Heatmap score [EVD: Pep Intensity (>%1.1f)]:
   })
 )
 
+
+#####################################################################
+
+qcMetric_EVD_ReporterInt =  setRefClass(
+  "qcMetric_EVD_ReporterInt",
+  contains = "qcMetric",
+  methods = list(initialize=function() {  callSuper(
+    helpText = 
+      "ITRAQ/TMT reporter intensity boxplots of all PSMs for each channel and Raw file.
+The opacity (alpha value) of the bar correlates to the number of PSMs with non-zero abundance (1.0 = full labeling; 0.0 = no reporter ions; see heatmap scoring below).
+
+There is a similar 'Experimental Group' based metric/plot based on proteins.txt.
+
+PTXQC uses isotope-corrected intensities (eliminating channel carry-over) to allow for detection of empty channels, e.g. due to mis-labeling.
+If MaxQuant did no isotope correction (i.e. corrected and uncorrected channels are equal), 
+the plot title will show a warning. The scores are too optimistic in this case (since carry-over will be mistaken for actual signal).
+
+Note: global labelling efficiency can only be judged indirectly with this metric, since isobaric reporters where set as
+      fixed modification. Thus, MaxQuant. will only identify labeled peptides in the first place.
+      Observing only very few peptides (see peptide count metric), is a good indicator.
+      However, if only the labeling of a few channels failed, this will be noticable here!
+
+Labeling can still be poor, even though identification was successful. In this case, the boxplots will touch the left (0 intensity)
+side of the plot.
+
+A labeling efficiency (LE) is computed per Raw file AND channel as: the percentage of PSMs which have non-zero reporter intensity.
+Ideally LE reaches 100 percent (all peptides have an intensity in the channel; biological missingness ignored).
+
+Heatmap score: minimum labeling efficiency per Raw file across all channels.
+I.e. for 4-plex ITRAQ and two Raw files, there will be 8 labeling efficiency (LE) values. 
+Each Raw file is now scored by the minimum LE of all its 4 channels.
+",
+    workerFcn=function(.self, df_evd)
+    {
+      ## completeness check
+      stopifnot(c("fc.raw.file") %in% colnames(df_evd))
+      ## check if reporter.intensity.0... is present
+      cols_reporter = grepv("^reporter.intensity.corrected.[0-9]", colnames(df_evd));
+      cols_reporter.nc = grepv("^reporter.intensity.[0-9]", colnames(df_evd));
+      stopifnot(length(cols_reporter) > 1 && length(cols_reporter.nc) > 1)
+      ## check if correction was done at all
+      if (all(df_evd[1:1000, cols_reporter] == df_evd[1:1000, cols_reporter.nc], na.rm = TRUE))
+      {
+        title_subtext = "Warning: MaxQuant did NO isotope correction";  
+        title_color = "red"
+      } else {
+        title_subtext = "";  
+        title_color = "black"
+      }
+        
+      
+      ## use data.table for aggregation, its MUCH faster than ddply() and uses almost no extra memory
+      df_reps = melt(df_evd[, c("fc.raw.file", cols_reporter)], 
+                     id.vars ="fc.raw.file", 
+                     value.name = "intensity",
+                     variable.name = "channel")
+      head(df_reps)
+      dt_reps = data.table(df_reps)
+
+      ## do NOT remove -inf and NA's and 0's -- we need them to count labeling-efficiency (#entries with intensity > 0 vs. ALL)
+
+      ## rename 'reporter.intensity.corrected.0' to '0'
+      dt_reps$channel = substring(dt_reps$channel, nchar('reporter.intensity.corrected.') + 1)
+      ## invert the channel order (so that channel 0 is highest, i.e. appears on top in plot)
+      dt_reps$channel = factor(dt_reps$channel, levels = sort(unique(dt_reps$channel), decreasing = TRUE))
+      head(dt_reps)
+      
+      ## compute global boxplot stats (so we can fix min/max across plots)
+      ## also return labEff_PC (labeling efficiency in %)
+      ylims = dt_reps[, { limits = boxplot.stats(intensity + 1, coef = 0.7)$stats;
+                          list(imin = limits[1], lower = limits[2], middle = limits[3], upper = limits[4], imax = limits[5], labEff_PC = sum(intensity > 0, na.rm = TRUE) / (.N)) 
+                        },
+                        by=c("fc.raw.file", "channel")
+                     ]
+      ylims2 = range(ylims$imin, ylims$imax)
+      fcn_boxplot_internal = function(data, title_subtext = title_subtext, title_color = title_color) 
+      {
+        #require(ggplot2)
+        #data = ylims
+        pl = ggplot(data=data) +
+          geom_boxplot(aes_string(x = "fc.raw.file", fill = "channel", ## do not use col="channel", since this will dodge bars and loose scaling
+                                  ymin = "imin", lower = "lower", middle = "middle", upper = "upper", ymax = "imax",
+                                  alpha = "labEff_PC"),
+                       position = "dodge", stat = "identity") +
+          xlab("") + 
+          ylab("reporter intensity (log10)") +
+          guides(alpha=guide_legend(title="Label Eff"), fill = guide_legend(reverse = TRUE)) + ## inverse label order, so that channel 0 is on top
+          theme(axis.text.x = element_text(angle=45, vjust = 0.5), legend.position="right", plot.title = element_text(color=title_color)) +
+          addGGtitle("EVD: Reporter label intensities", title_subtext) + 
+          #geom_hline(size = 1, alpha = 0.5, yintercept = ref_median, colour = "black") +
+          scale_alpha(range = range(ylims$labEff_PC)) +
+          scale_x_discrete_reverse(unique(data$fc.raw.file)) +
+          scale_y_log10(limits = ylims2) +
+          coord_flip() 
+
+        #print(pl)
+        return(pl)
+      }
+      channel_count = length(unique(ylims$channel))
+      lpl = byXflex(data = ylims, indices = ylims$fc.raw.file, subset_size = round(40 / channel_count), 
+                    sort_indices = TRUE, FUN = fcn_boxplot_internal, title_subtext = title_subtext, title_color = title_color)
+      # heatmap scoring
+      ## .. take min score over all channels
+      qcScore = ylims[, list(score_min = min(labEff_PC)), by=c("fc.raw.file")]
+      colnames(qcScore) = c("fc.raw.file", .self$qcName)
+  
+      
+      return(list(plots = lpl, qcScores = qcScore))
+    }, 
+    qcCat = "prep", 
+    qcName = "EVD:~Reporter~intensity", 
+    orderNr = 0031  ## should not show up in heatmap
+  )
+    return(.self)
+  })
+)
 
 
 #####################################################################
@@ -707,7 +825,7 @@ qcMetric_EVD_Charge =  setRefClass(
       "Charge distribution per Raw file. For typtic digests, peptides of charge 2 
 (one N-terminal and one at tryptic C-terminal R or K residue) should be dominant.
 Ionization issues (voltage?), in-source fragmentation, missed cleavages and buffer irregularities can 
-cause a shift (see [http://onlinelibrary.wiley.com/doi/10.1002/mas.21544/abstract](Bittremieux 2017, DOI: 10.1002/mas.21544) ).
+cause a shift (see [Bittremieux 2017, DOI: 10.1002/mas.21544](http://onlinelibrary.wiley.com/doi/10.1002/mas.21544/abstract) ).
 The charge distribution should be similar across Raw files.
 Consistent charge distribution is paramount for comparable 3D-peak intensities across samples.
 
@@ -748,8 +866,7 @@ qcMetric_EVD_IDoverRT =  setRefClass(
 Ideally, the LC gradient is chosen such that the number of identifications (here, after FDR filtering) is 
 uniform over time, to ensure consistent instrument duty cycles. Sharp peaks and uneven distribution of 
 identifications over time indicate potential for LC gradient optimization. 
-See [http://www.ncbi.nlm.nih.gov/pubmed/24700534](Moruz et al., GradientOptimizer: An open-source graphical environment for calculating optimized gradients in reversed-phase
-liquid chromatography, Proteomics, 06/2014; 14) for details.
+See [Moruz 2014, DOI: 10.1002/pmic.201400036](http://www.ncbi.nlm.nih.gov/pubmed/24700534) for details.
 
 Heatmap score [EVD: ID rate over RT]: Scored using 'Uniform' scoring function, i.e. constant receives good score, extreme shapes are bad.
 ",
