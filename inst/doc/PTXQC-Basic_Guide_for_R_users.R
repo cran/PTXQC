@@ -1,36 +1,37 @@
 ## ---- eval=FALSE---------------------------------------------------------
 #  vignette("PTXQC-InputData", package = "PTXQC")
 
-## ---- eval=TRUE----------------------------------------------------------
-require(PTXQC)
-
-## the next require() is needed to prevent a spurious error in certain R versions (might be a bug in R or a package)
-## error message is:
-##    Error in Scales$new : could not find function "loadMethod"
-require(methods)
-
-## specify a path to a MaxQuant txt folder
-## Note: This folder needs to be complete (see 'vignette("PTXQC-InputData", package = "PTXQC")')
-if (1) {
-  ## we will use an example dataset from PRIDE (dataset 2 of the PTXQC publication)
-  local_zip = tempfile(fileext=".zip")
-  tryCatch({
-    download.file("ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2015/11/PXD003133/txt_20min.zip", destfile = local_zip)
-  }, error = function(err) {
-    ## on Windows, one can get a 'cannot open URL' using the default method. So we try another
-    download.file("ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2015/11/PXD003133/txt_20min.zip", destfile = local_zip, method= "internal")
-  })
-  unzip(local_zip, exdir = tempdir()) ## extracts content
-  txt_folder = file.path(tempdir(), "txt_20min")
-} else {
-  ## if you have local MaxQuant output, just use it
-  txt_folder = "c:/Proteomics/MouseLiver/combined/txt"
-}
-
-r = createReport(txt_folder)
-
-cat(paste0("\nReport generated as '", r$report_file, "'\n\n"))
-
+## ---- eval=FALSE---------------------------------------------------------
+#  require(PTXQC)
+#  
+#  ## the next require() is needed to prevent a spurious error in certain R versions (might be a bug in R or a package)
+#  ## error message is:
+#  ##    Error in Scales$new : could not find function "loadMethod"
+#  require(methods)
+#  
+#  ## specify a path to a MaxQuant txt folder
+#  ## Note: This folder needs to be complete (see 'vignette("PTXQC-InputData", package = "PTXQC")')
+#  if (1) {
+#    ## we will use an example dataset from PRIDE (dataset 2 of the PTXQC publication)
+#    local_zip = tempfile(fileext=".zip")
+#    tryCatch({
+#      download.file("ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2015/11/PXD003133/txt_20min.zip", destfile = local_zip)
+#    }, error = function(err) {
+#      ## on Windows, one can get a 'cannot open URL' using the default method. So we try another
+#      download.file("ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2015/11/PXD003133/txt_20min.zip", destfile = local_zip, method= "internal")
+#  
+#    })
+#    unzip(local_zip, exdir = tempdir()) ## extracts content
+#    txt_folder = file.path(tempdir(), "txt_20min")
+#  } else {
+#    ## if you have local MaxQuant output, just use it
+#    txt_folder = "c:/Proteomics/MouseLiver/combined/txt"
+#  }
+#  
+#  r = createReport(txt_folder)
+#  
+#  cat(paste0("\nReport generated as '", r$report_file, "'\n\n"))
+#  
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  vignette("PTXQC-CustomizeReport", package = "PTXQC")

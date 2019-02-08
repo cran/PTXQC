@@ -11,7 +11,7 @@
 
 <meta name="author" content="Chris Bielow chris.bielow@fu-berlin.de" />
 
-<meta name="date" content="2018-02-07" />
+<meta name="date" content="2019-02-08" />
 
 <title>Basic R-Usage Guide for PTXQC</title>
 
@@ -92,8 +92,14 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -102,14 +108,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -121,7 +187,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Basic R-Usage Guide for PTXQC</h1>
 <h4 class="author"><em>Chris Bielow <a href="mailto:chris.bielow@fu-berlin.de">chris.bielow@fu-berlin.de</a></em></h4>
-<h4 class="date"><em>2018-02-07</em></h4>
+<h4 class="date"><em>2019-02-08</em></h4>
 
 </div>
 
@@ -136,10 +202,9 @@ $(document).ready(function () {
 <div id="generate-a-default-report" class="section level2">
 <h2>Generate a default report</h2>
 <p>This is the most simple invokation of PTXQC::createReport().</p>
-<pre class="r"><code>require(PTXQC)</code></pre>
-<pre><code>## Loading required package: PTXQC</code></pre>
-<pre><code>## Loading package PTXQC (version 0.92.3)</code></pre>
-<pre class="r"><code>## the next require() is needed to prevent a spurious error in certain R versions (might be a bug in R or a package)
+<pre class="r"><code>require(PTXQC)
+
+## the next require() is needed to prevent a spurious error in certain R versions (might be a bug in R or a package)
 ## error message is:
 ##    Error in Scales$new : could not find function &quot;loadMethod&quot;
 require(methods)
@@ -154,678 +219,18 @@ if (1) {
   }, error = function(err) {
     ## on Windows, one can get a 'cannot open URL' using the default method. So we try another
     download.file(&quot;ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2015/11/PXD003133/txt_20min.zip&quot;, destfile = local_zip, method= &quot;internal&quot;)
+    
   })
   unzip(local_zip, exdir = tempdir()) ## extracts content
   txt_folder = file.path(tempdir(), &quot;txt_20min&quot;)
 } else {
   ## if you have local MaxQuant output, just use it
   txt_folder = &quot;c:/Proteomics/MouseLiver/combined/txt&quot;
-}</code></pre>
-<pre><code>## Warning in download.file(&quot;ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2015/11/PXD003133/txt_20min.zip&quot;, : InternetOpenUrl failed: 'The login request was denied
-## '</code></pre>
-<pre class="r"><code>r = createReport(txt_folder)</code></pre>
-<pre><code>## YAML: PTXQC$ReportFilename$extended def: TRUE
-## YAML: PTXQC$UseLocalMQPar def: TRUE
-## YAML: File$Parameters$enabled def: TRUE
-## YAML: PTXQC$NameLengthMax_num def: 10
-## YAML: File$Summary$enabled def: TRUE
-## YAML: File$Summary$IDRate$Thresh_bad_num def: 20
-## YAML: File$Summary$IDRate$Thresh_great_num def: 35
-## YAML: File$ProteinGroups$enabled def: TRUE
-## YAML: File$ProteinGroups$RatioPlot$LabelIncThresh_num def: 4
-## YAML: File$ProteinGroups$IntensityThreshLog2_num def: 25
-## YAML: File$Evidence$enabled def: TRUE
-## YAML: File$Evidence$ProteinCountThresh_num def: 3500
-## YAML: File$Evidence$IntensityThreshLog2_num def: 23
-## YAML: File$Evidence$PeptideCountThresh_num def: 15000
-## YAML: File$Evidence$SpecialContaminants def: c(&quot;MYCOPLASMA&quot;, &quot;1&quot;)
-## YAML: File$Evidence$MQpar_MatchingTimeWindow_num def: 1
-## YAML: File$Evidence$MatchBetweenRuns_wA def: auto
-## YAML: File$Evidence$MQpar_firstSearchTol_num def: 20
-## YAML: File$Evidence$firstSearch_outOfCalWarnSD_num def: 2
-## YAML: File$Evidence$MQpar_mainSearchTol_num def: NA
-## YAML: File$MsMs$enabled def: TRUE
-## YAML: File$MsMsScans$enabled def: TRUE
-## YAML: File$MsMsScans$IonInjectionThresh_num def: 10
-## YAML: PTXQC$OutputFormats def: html,plainPDF
-## YAML: PTXQC$PlainPDF$AddPageNumbers def: on
-## YAML: order$qcMetric_PAR def: 1
-## YAML: order$qcMetric_PG_PCA def: 3
-## YAML: order$qcMetric_EVD_Top5Cont def: 10
-## YAML: order$qcMetric_PG_Ratio def: 19
-## YAML: order$qcMetric_EVD_UserContaminant def: 20
-## YAML: order$qcMetric_EVD_PeptideInt def: 30
-## YAML: order$qcMetric_EVD_ReporterInt def: 31
-## YAML: order$qcMetric_PG_RawInt def: 32
-## YAML: order$qcMetric_PG_LFQInt def: 33
-## YAML: order$qcMetric_PG_ReporterInt def: 34
-## YAML: order$qcMetric_MSMS_MissedCleavages def: 40
-## YAML: order$qcMetric_EVD_Charge def: 100
-## YAML: order$qcMetric_PG_Cont def: 110
-## YAML: order$qcMetric_MSMSScans_TopNoverRT def: 120
-## YAML: order$qcMetric_EVD_IDoverRT def: 150
-## YAML: order$qcMetric_EVD_RTPeakWidth def: 170
-## YAML: order$qcMetric_EVD_MBRAlign def: 210
-## YAML: order$qcMetric_EVD_MBRIdTransfer def: 220
-## YAML: order$qcMetric_EVD_MBRaux def: 221
-## YAML: order$qcMetric_MSMSScans_IonInjTime def: 240
-## YAML: order$qcMetric_MSMSScans_MSMSIntensity def: 245
-## YAML: order$qcMetric_EVD_MS2OverSampling def: 250
-## YAML: order$qcMetric_EVD_PreCal def: 260
-## YAML: order$qcMetric_EVD_PostCal def: 270
-## YAML: order$qcMetric_MSMS_MSMSDecal def: 280
-## YAML: order$qcMetric_SM_MSMSIdRate def: 300
-## YAML: order$qcMetric_MSMSScans_TopN def: 350 || new val: 120
-## YAML: order$qcMetric_MSMSScans_TopNID def: 380
-## YAML: order$qcMetric_MSMSScans_DepPep def: 383
-## YAML: order$qcMetric_EVD_MissingValues def: 390
-## YAML: order$qcMetric_EVD_PeptideCount def: 400
-## YAML: order$qcMetric_EVD_ProteinCount def: 450
-## YAML: order$qcMetric_AverageQualOverall def: 9999
-## Reading file C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/parameters.txt ...
-## Read 61 entries from C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/parameters.txt.
-## Updating colnames
-## Simplifying contaminants
-## Simplifying reverse
-## Starting to work on PAR: MQ Parameters ...
-## 
-## Memory [MB] prior|after|max(diff) : 52 | 53.7 | 88.4 (36)
-## 
-## Duration: 0 s
-## 
-## ... PAR: MQ Parameters  done
-## Reading file C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/summary.txt ...
-## Read 9 entries from C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/summary.txt.
-## Updating colnames
-## Simplifying contaminants
-## Simplifying reverse
-## Adding fc.raw.file column ... done
-## Starting to work on SM: MS^2 ID rate (&quot;&gt;%1.0f&quot;) ...
-## 
-## Memory [MB] prior|after|max(diff) : 54 | 55.4 | 78 (24)
-## 
-## Duration: 0 s
-## 
-## ... SM: MS^2 ID rate (&quot;&gt;%1.0f&quot;)  done
-## Reading file C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/proteinGroups.txt ...
-## Read 4134 entries from C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/proteinGroups.txt.
-## Updating colnames
-## Simplifying contaminants
-## Simplifying reverse
-## Starting to work on PG: Contaminants ...
-## 
-## Memory [MB] prior|after|max(diff) : 62.5 | 63.1 | 82 (19)
-## 
-## Duration: 0 s
-## 
-## ... PG: Contaminants  done
-## Starting to work on PG: raw intensity ...
-## 
-## Memory [MB] prior|after|max(diff) : 63.1 | 65.4 | 106 (43)
-## 
-## Duration: 0 s
-## 
-## ... PG: raw intensity  done
-## Starting to work on PG: LFQ intensity ...
-## 
-## Memory [MB] prior|after|max(diff) : 65.4 | 66.3 | 97.6 (32)
-## 
-## Duration: 0 s
-## 
-## ... PG: LFQ intensity  done
-## Starting to work on PG: Principal Component ...
-## 
-## Memory [MB] prior|after|max(diff) : 66.3 | 67.7 | 117.7 (51)
-## 
-## Duration: 0 s
-## 
-## ... PG: Principal Component  done
-## Reading file C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/evidence.txt ...
-## Requiring column(s) 'retention.length' to be of type 'numeric'!
-## Requiring column(s) 'retention.time.calibration' to be of type 'numeric'!
-## Requiring column(s) 'retention.time', 'calibrated.retention.time' to be of type 'numeric'!
-## Requiring column(s) 'match.time.difference' to be of type 'numeric'!
-## Requiring column(s) 'intensity' to be of type 'numeric'!
-## Requiring column(s) 'mass.error..ppm.', 'mass.error..da.', 'uncalibrated.mass.error..ppm.', 'uncalibrated.mass.error..da.' to be of type 'numeric'!
-## Requiring column(s) 'uncalibrated...calibrated.m.z..ppm.', 'uncalibrated...calibrated.m.z..da.' to be of type 'numeric'!
-## Requiring column(s) 'm.z' to be of type 'numeric'!
-## Requiring column(s) 'score' to be of type 'numeric'!
-## WARNING: Could not find column regex '^fraction$' using case-INsensitive matching.
-## WARNING: Could not find column regex '[RK]\.Count' using case-INsensitive matching.
-## Requiring column(s) 'charge' to be of type 'numeric'!
-## Requiring column(s) 'mass' to be of type 'numeric'!
-## Requiring column(s) 'ms.ms.count' to be of type 'numeric'!
-## WARNING: Could not find column regex '^reporter.intensity.' using case-INsensitive matching.
-## Keeping 17 of 62 columns!
-## Read 90398 entries from C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/evidence.txt.
-## Updating colnames
-## Simplifying contaminants
-## Simplifying reverse
-## Adding fc.raw.file column ... done
-## Starting to work on EVD:Contaminant (%s) ...
-## 
-## Memory [MB] prior|after|max(diff) : 88.5 | 89.6 | 143.6 (55)
-## 
-## Duration: 0 s
-## 
-## ... EVD:Contaminant (%s)  done
-## Starting to work on EVD: Pep Intensity (&quot;&gt;%1.1f&quot;) ...
-## 
-## Memory [MB] prior|after|max(diff) : 89.6 | 99.4 | 142.4 (53)
-## 
-## Duration: 0 s
-## 
-## ... EVD: Pep Intensity (&quot;&gt;%1.1f&quot;)  done
-## Starting to work on EVD: Prot Count (&quot;&gt;%1.0f&quot;) ...
-## 
-## Memory [MB] prior|after|max(diff) : 99.8 | 100 | 156.3 (56)
-## 
-## Duration: 0 s
-## 
-## ... EVD: Prot Count (&quot;&gt;%1.0f&quot;)  done
-## Starting to work on EVD: Pep Count (&quot;&gt;%1.0f&quot;) ...
-## 
-## Memory [MB] prior|after|max(diff) : 100 | 100.2 | 133.5 (34)
-## 
-## Duration: 0 s
-## 
-## ... EVD: Pep Count (&quot;&gt;%1.0f&quot;)  done
-## Starting to work on EVD: RT Peak Width ...
-## 
-## Memory [MB] prior|after|max(diff) : 100.2 | 100.4 | 173.6 (73)
-## 
-## Duration: 0 s
-## 
-## ... EVD: RT Peak Width  done
-## Starting to work on EVD: MBR Align ...
-## 
-## Memory [MB] prior|after|max(diff) : 100.4 | 101.8 | 173.8 (73)
-## 
-## Duration: 5 s
-## 
-## ... EVD: MBR Align  done
-## Starting to work on EVD: MBR ID-Transfer ...
-## 
-## Memory [MB] prior|after|max(diff) : 101.8 | 102.4 | 310 (208)
-## 
-## Duration: 42 s
-## 
-## ... EVD: MBR ID-Transfer  done
-## Starting to work on EVD: MBR auxilliary ...
-## 
-## Memory [MB] prior|after|max(diff) : 102.4 | 107.8 | 261.9 (160)
-## 
-## Duration: 1 s
-## 
-## ... EVD: MBR auxilliary  done
-## Starting to work on EVD: Charge ...</code></pre>
-<pre><code>## Warning: Ignoring unknown aesthetics: width</code></pre>
-<pre><code>## 
-## Memory [MB] prior|after|max(diff) : 107.8 | 108 | 138 (30)
-## 
-## Duration: 0 s
-## 
-## ... EVD: Charge  done
-## Starting to work on EVD: ID rate over RT ...
-## 
-## Memory [MB] prior|after|max(diff) : 108 | 108.2 | 177.2 (69)
-## 
-## Duration: 0 s
-## 
-## ... EVD: ID rate over RT  done
-## Starting to work on EVD: MS Cal-Pre (%1.1f) ...
-## 
-## Memory [MB] prior|after|max(diff) : 108.2 | 111.5 | 205.5 (97)
-## 
-## Duration: 0 s
-## 
-## ... EVD: MS Cal-Pre (%1.1f)  done
-## Starting to work on EVD: MS Cal-Post ...
-## 
-## Memory [MB] prior|after|max(diff) : 111.5 | 114.8 | 218.4 (107)
-## 
-## Duration: 0 s
-## 
-## ... EVD: MS Cal-Post  done
-## Starting to work on EVD: Contaminants ...
-## 
-## Memory [MB] prior|after|max(diff) : 114.8 | 117.8 | 194.5 (80)
-## 
-## Duration: 0 s
-## 
-## ... EVD: Contaminants  done
-## Starting to work on EVD: MS^2 Oversampling ...
-## 
-## Memory [MB] prior|after|max(diff) : 117.8 | 118 | 171 (53)
-## 
-## Duration: 0 s
-## 
-## ... EVD: MS^2 Oversampling  done
-## Starting to work on EVD: Pep Missing Values ...
-## 
-## Memory [MB] prior|after|max(diff) : 118 | 125.6 | 309.4 (191)
-## 
-## Duration: 1 s
-## 
-## ... EVD: Pep Missing Values  done
-## Reading file C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/msms.txt ...
-## Requiring column(s) 'missed.cleavages' to be of type 'numeric'!
-## Requiring column(s) 'evidence.id' to be of type 'numeric'!
-## Keeping 2 of 60 columns!
-## Read 86086 entries from C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/msms.txt.
-## Updating colnames
-## Simplifying contaminants
-## Simplifying reverse
-## Adding fc.raw.file column ... done
-## Starting to work on MSMS: MS^2 Cal (%s) ...
-## 
-## Memory [MB] prior|after|max(diff) : 222.2 | 225.8 | 300.9 (79)
-## 
-## Duration: 1 s
-## 
-## ... MSMS: MS^2 Cal (%s)  done
-## Starting to work on MSMS: %s ...
-## 
-## Memory [MB] prior|after|max(diff) : 225.8 | 226 | 258 (32)
-## 
-## Duration: 0 s
-## 
-## ... MSMS: %s  done
-## Reading file C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/msmsScans.txt ...
-## Requiring column(s) 'ion.injection.time' to be of type 'numeric'!
-## Requiring column(s) 'retention.time' to be of type 'numeric'!
-## WARNING: Could not find column regex '^dp.aa$' using case-INsensitive matching.
-## WARNING: Could not find column regex '^dp.modification$' using case-INsensitive matching.
-## Keeping 2 of 41 columns!
-## Read 201567 entries from C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/msmsScans.txt.
-## Updating colnames
-## Simplifying contaminants
-## Simplifying reverse
-## Adding fc.raw.file column ... done
-## Starting to work on MS^2*Scans: TopN over RT ...
-## 
-## Memory [MB] prior|after|max(diff) : 141.7 | 143.7 | 243.2 (102)
-## 
-## Duration: 0 s
-## 
-## ... MS^2*Scans: TopN over RT  done
-## Starting to work on MS^2*Scans: Ion Inj Time ...
-## 
-## Memory [MB] prior|after|max(diff) : 143.6 | 144.1 | 159.8 (16)
-## 
-## Duration: 0 s
-## 
-## ... MS^2*Scans: Ion Inj Time  done
-## Starting to work on MS^2*Scans: Intensity ...</code></pre>
-<pre><code>## Warning: Ignoring unknown aesthetics: width</code></pre>
-<pre><code>## 
-## Memory [MB] prior|after|max(diff) : 143.8 | 151.5 | 231.3 (88)
-## 
-## Duration: 0 s
-## 
-## ... MS^2*Scans: Intensity  done
-## Starting to work on MS^2*Scans: TopN high ...
-## 
-## Memory [MB] prior|after|max(diff) : 151.3 | 151.4 | 175.4 (24)
-## 
-## Duration: 0 s
-## 
-## ... MS^2*Scans: TopN high  done
-## Starting to work on MS^2*Scans: TopN ID over N ...
-## 
-## Memory [MB] prior|after|max(diff) : 151.3 | 151.4 | 172.2 (21)
-## 
-## Duration: 0 s
-## 
-## ... MS^2*Scans: TopN ID over N  done
-## [1] &quot;#Metrics: &quot;
-## [1] 33
-## Starting to work on Average Overall Quality ...
-## 
-## Memory [MB] prior|after|max(diff) : 151.5 | 151.5 | 152.5 (1)
-## 
-## Duration: 0 s
-## 
-## ... Average Overall Quality  done</code></pre>
-<pre><code>## Warning in FUN(subset, ...): NAs introduced by coercion</code></pre>
-<pre><code>## Creating Report file ...HTML TEMPLATE: C:/Users/bielow/AppData/Local/Temp/RtmpEzO9PV/Rinst10147a5875f6/PTXQC/./reportTemplate/PTXQC_report_template.Rmd</code></pre>
-<pre><code>## processing file: PTXQC_report_template.Rmd</code></pre>
-<pre><code>## Warning: Removed 1342 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: position_dodge requires non-overlapping x intervals</code></pre>
-<pre><code>## Warning: Removed 85 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: position_dodge requires non-overlapping x intervals</code></pre>
-<pre><code>## Warning: Removed 125 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: position_dodge requires non-overlapping x intervals</code></pre>
-<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 719 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 779 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 720 rows containing non-finite values (stat_bin).</code></pre>
-<pre><code>## Warning: Removed 719 rows containing non-finite values (stat_bin).</code></pre>
-<pre><code>## output file: PTXQC_report_template.knit.md</code></pre>
-<pre><code>## &quot;C:/Program Files/RStudio/bin/pandoc/pandoc&quot; +RTS -K512m -RTS PTXQC_report_template.utf8.md --to html --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output pandocbac2f222cea.html --smart --email-obfuscation none --self-contained --standalone --section-divs --table-of-contents --toc-depth 3 --template &quot;C:\Users\bielow\Documents\R\win-library\3.4\rmarkdown\rmd\h\default.html&quot; --no-highlight --variable highlightjs=1 --number-sections --variable &quot;theme:bootstrap&quot; --include-in-header &quot;C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2\rmarkdown-strbac488c610b.html&quot;</code></pre>
-<pre><code>## 
-## Output created: C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/report_v0.92.3_txt_20min.html</code></pre>
-<pre><code>## [[1]]</code></pre>
-<pre><code>## Warning: Removed 4 rows containing missing values (geom_text).</code></pre>
-<pre><code>## Warning: Removed 1342 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: position_dodge requires non-overlapping x intervals</code></pre>
-<pre><code>## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## metrics unknown for character 0xa
+}
 
-## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## metrics unknown for character 0xa</code></pre>
-<pre><code>## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
+r = createReport(txt_folder)
 
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa</code></pre>
-<pre><code>## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa</code></pre>
-<pre><code>## Warning: Removed 85 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: position_dodge requires non-overlapping x intervals</code></pre>
-<pre><code>## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## metrics unknown for character 0xa
-
-## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## metrics unknown for character 0xa</code></pre>
-<pre><code>## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa</code></pre>
-<pre><code>## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa</code></pre>
-<pre><code>## Warning: Removed 125 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: position_dodge requires non-overlapping x intervals</code></pre>
-<pre><code>## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## metrics unknown for character 0xa
-
-## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font
-## metrics unknown for character 0xa</code></pre>
-<pre><code>## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa
-
-## Warning in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y, :
-## font metrics unknown for character 0xa</code></pre>
-<pre><code>## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa
-
-## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x
-## $y, : font metrics unknown for character 0xa</code></pre>
-<pre><code>## Warning: Removed 5 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 719 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 779 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>## Warning: Removed 720 rows containing non-finite values (stat_bin).</code></pre>
-<pre><code>## Warning: Removed 719 rows containing non-finite values (stat_bin).</code></pre>
-<pre><code>##  done
-## Report file created at
-## 
-##     C:\Users\bielow\AppData\Local\Temp\Rtmp2dZun2/txt_20min/report_v0.92.3_txt_20min.*
-## 
-## 
-## 
-## Time elapsed: 1.8 min</code></pre>
-<pre class="r"><code>cat(paste0(&quot;\nReport generated as '&quot;, r$report_file, &quot;'\n\n&quot;))</code></pre>
-<pre><code>## 
-## Report generated as ''</code></pre>
+cat(paste0(&quot;\nReport generated as '&quot;, r$report_file, &quot;'\n\n&quot;))</code></pre>
 </div>
 <div id="generate-a-customized-report" class="section level2">
 <h2>Generate a customized report</h2>
