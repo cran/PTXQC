@@ -69,7 +69,7 @@
 #    yaml_config = list()
 #  }
 #  
-#  r = createReport(txt_folder, yaml_config)
+#  r = createReport(txt_folder, mztab_file = NULL, yaml_obj = yaml_config)
 #  
 #  cat(paste0("\nReport generated as '", r$report_file, "'\n\n"))
 #  

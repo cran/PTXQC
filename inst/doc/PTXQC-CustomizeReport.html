@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Chris Bielow chris.bielow@fu-berlin.de" />
 
-<meta name="date" content="2019-04-16" />
+<meta name="date" content="2020-01-14" />
 
 <title>Customizing PTXQC reports</title>
 
@@ -71,9 +72,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -87,7 +86,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -104,8 +102,6 @@ summary {
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -163,20 +159,17 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -186,8 +179,8 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Customizing PTXQC reports</h1>
-<h4 class="author"><em>Chris Bielow <a href="mailto:chris.bielow@fu-berlin.de">chris.bielow@fu-berlin.de</a></em></h4>
-<h4 class="date"><em>2019-04-16</em></h4>
+<h4 class="author">Chris Bielow <a href="mailto:chris.bielow@fu-berlin.de">chris.bielow@fu-berlin.de</a></h4>
+<h4 class="date">2020-01-14</h4>
 
 </div>
 
@@ -284,6 +277,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
