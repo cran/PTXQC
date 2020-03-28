@@ -218,9 +218,9 @@ Heatmap score [EVD: Pep Intensity (>%1.1f)]:
       int_dev.s = pastet("INT RSD [%]", round(int_dev_pep, 3))
       lpl = boxplotCompare(data = df_evd[, c("fc.raw.file", "intensity", "contaminant")],
                            log2 = TRUE, 
-                           mainlab="EVD: peptide intensity distribution",
+                           mainlab = "EVD: peptide intensity distribution",
                            ylab = expression(log[2]*" intensity"),
-                           sublab=paste0("RSD ", round(int_dev_pep, 1),"% (expected < 5%)\n"),
+                           sublab = paste0("RSD ", round(int_dev_pep, 1),"% (expected < 5%)\n"),
                            abline = thresh_intensity)
       #for (pl in lpl) print(pl)
       
@@ -1351,13 +1351,12 @@ qcMetric_EVD_UpSet =  setRefClass(
   contains = "qcMetric",
   methods = list(initialize=function() {  callSuper(    
     helpTextTemplate = 
-      "The metric shows an upSet plot based on the number of modified peptide sequences per Raw file, intersected or merged with other Raw files (see below for details).<br>
+      'The metric shows an upSet plot based on the number of modified peptide sequences per Raw file, intersected or merged with other Raw files (see below for details).<br>
 
-If the number of Raw files is >=6, only the 'distinct' plot is generated (the other two are skipped for performance reasons).
+If the number of Raw files is >=6, only the `distinct` plot is generated (the other two are skipped for performance reasons).
+<a href="https://raw.githubusercontent.com/cbielow/PTXQC/master/inst/reportTemplate/modes_UpSet.png" target="_blank" rel="noopener"><span>See here for an example plot showing how the set size is computed</span> </a>.
 
-![](https://raw.githubusercontent.com/cbielow/PTXQC/mzTab_support/inst/reportTemplate/modes_UpSet.png 'Example plot showing how the set size is computed')
-    
-Definition: An 'active set' is the set of black dots in a column of the plot -- as opposed to the grey dots (you'll understand when you see it).
+Definition: An `active set` is the set of black dots in a column of the plot -- as opposed to the grey dots (you will understand when you see it).
 
 <p>
 <b>distinct:</b> shows the number of sequences that are present in ALL active sets. For three Raw files and active sets A and B, this would mean all sequences which occur in A and B (intersect), but not in C (setdiff).<br>
@@ -1365,7 +1364,7 @@ Definition: An 'active set' is the set of black dots in a column of the plot -- 
 <b>union:</b> shows the number of sequences that occurs in total. For two files that are all sequences that occurs either in A or in B (union).<br>
 <p>
 Heatmap score [EVD: UpSet]: The proportion of sequences that the file has in common with all other files.
-",
+',
     workerFcn = function(.self, df_evd)
     {
       if (!checkInput(c("modified.sequence", "fc.raw.file"), df_evd)) return()
@@ -1384,13 +1383,16 @@ Heatmap score [EVD: UpSet]: The proportion of sequences that the file has in com
       }
       
       lf = tapply(df_evd$modified.sequence, df_evd$fc.raw.file, function(x){return(list(unique(x)))})
+      # get rid of rawfiles without any PepIDs
+      lf = Filter(function(l) length(l)>0 && any(!is.na(l)), lf)
       if (length(lf) <= 1)
       {
         lpl = list(ggText("UpSetR", "Only single Raw file detected. Cannot compute unions/intersections."))
         return(list(plots = lpl, titles = list("EVD: UpSet")))
       }
       
-      lpl = list(UpSetR::upset(UpSetR::fromList(lf), nsets = min(30, length(lf)), keep.order = TRUE, mainbar.y.label = "distinct size"))
+      
+      lpl = list(UpSetR::upset(UpSetR::fromList(lf), nsets = min(20, length(lf)), keep.order = TRUE, mainbar.y.label = "distinct size"))
       if (length(lf) < 6)
       { ## performance for enumerating all supersets forbids doing it on larger sets until we make this code smarter...
         lpl[[2]] = UpSetR::upset(UpSetR::fromExpression(getOutputWithMod(lf, intersect)), mainbar.y.label = "intersection size")

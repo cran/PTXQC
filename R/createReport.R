@@ -104,7 +104,7 @@ createReport = function(txt_folder = NULL, mztab_file = NULL, yaml_obj = list(),
   ## will be ignored and the newly written yaml.config will contain the values from mqpar.xml.
   param_useMQPAR = yc$getYAML("PTXQC$UseLocalMQPar", TRUE)
   
-  add_fs_col = yc$getYAML("PTXQC$NameLengthMax_num", 10)
+  add_fs_col = yc$getYAML("PTXQC$NameLengthMax_num", 14)
   
   id_rate_bad = yc$getYAML("File$Summary$IDRate$Thresh_bad_num", 20, 0, 100)
   id_rate_great = yc$getYAML("File$Summary$IDRate$Thresh_great_num", 35, 0, 100)
@@ -207,6 +207,8 @@ createReport = function(txt_folder = NULL, mztab_file = NULL, yaml_obj = list(),
   
   ## write out the final YAML file (so users can disable metrics, if they fail)
   yc$writeYAML(rprt_fns$yaml_file)
+  ## write shortnames and sorting of filenames
+  eval(expr_fn_map)$writeMappingFile(rprt_fns$filename_sorting)
   
   
   ######
@@ -278,7 +280,7 @@ createReport = function(txt_folder = NULL, mztab_file = NULL, yaml_obj = list(),
     
     clusterCols$raw.intensity = colsW ## cluster using intensity
     
-    lst_qcMetrics[["qcMetric_PG_RawInt"]]$setData(df_pg, colsW, MAP_pg_groups, param_PG_intThresh)
+    lst_qcMetrics[["qcMetric_PG_RawInt"]]$setData(df_pg, int_cols = colsW, MAP_pg_groups = MAP_pg_groups, thresh_intensity = param_PG_intThresh)
   
     ##
     ## LFQ boxplots
@@ -766,7 +768,7 @@ createReport = function(txt_folder = NULL, mztab_file = NULL, yaml_obj = list(),
   #save(file = rprt_fns$R_plots_file, list = "GPL")
   #cat(" done\n")
   
-  ## write shortnames and sorting of filenames
+  ## write shortnames and sorting of filenames (again)
   eval(expr_fn_map)$writeMappingFile(rprt_fns$filename_sorting)
   
   cat(paste("Report file created at\n\n    ", rprt_fns$report_file_prefix, ".*\n\n", sep=""))

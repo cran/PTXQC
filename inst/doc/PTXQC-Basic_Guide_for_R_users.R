@@ -1,7 +1,7 @@
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  vignette("PTXQC-InputData", package = "PTXQC")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  require(PTXQC)
 #  
 #  ## the next require() is needed to prevent a spurious error in certain R versions (might be a bug in R or a package)
@@ -33,10 +33,10 @@
 #  cat(paste0("\nReport generated as '", r$report_file, "'\n\n"))
 #  
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  vignette("PTXQC-CustomizeReport", package = "PTXQC")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  require(PTXQC)
 #  require(yaml)
 #  

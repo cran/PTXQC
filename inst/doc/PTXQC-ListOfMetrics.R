@@ -1,4 +1,4 @@
-## ----setup, include=TRUE, echo=FALSE, results="asis"---------------------
+## ----setup, include=TRUE, echo=FALSE, results="asis"--------------------------
 ## global options
 knitr::opts_chunk$set(echo=FALSE, warning=FALSE, error=FALSE, message=FALSE, fig.width=10)
 
@@ -26,6 +26,6 @@ for (qcm in lst_qcMetrics_ord)
 cat(txt_TOC)
 
 
-## ----metrics, echo=FALSE, results="asis"---------------------------------
+## ----metrics, echo=FALSE, results="asis"--------------------------------------
   cat(txt_BODY)
 
