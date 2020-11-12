@@ -11,7 +11,7 @@
 
 <meta name="author" content="Chris Bielow chris.bielow@fu-berlin.de" />
 
-<meta name="date" content="2020-06-09" />
+<meta name="date" content="2020-11-12" />
 
 <title>List of Metrics</title>
 
@@ -365,7 +365,7 @@ summary {
 
 <h1 class="title toc-ignore">List of Metrics</h1>
 <h4 class="author">Chris Bielow <a href="mailto:chris.bielow@fu-berlin.de" class="email">chris.bielow@fu-berlin.de</a></h4>
-<h4 class="date">2020-06-09</h4>
+<h4 class="date">2020-11-12</h4>
 
 </div>
 
@@ -453,7 +453,7 @@ Internal metric to compute the average quality across all other metrics
 <div id="evd-charge" class="section level2">
 <h2><span class="header-section-number">3.2</span> EVD: Charge <a name="EVDCharge"></a></h2>
 <div class="helpText">
-<p>Charge distribution per Raw file. For typtic digests, peptides of charge 2 (one N-terminal and one at tryptic C-terminal R or K residue) should be dominant. Ionization issues (voltage?), in-source fragmentation, missed cleavages and buffer irregularities can cause a shift (see <a href="http://onlinelibrary.wiley.com/doi/10.1002/mas.21544/abstract">Bittremieux 2017, DOI: 10.1002/mas.21544</a> ). The charge distribution should be similar across Raw files. Consistent charge distribution is paramount for comparable 3D-peak intensities across samples.</p>
+<p>Charge distribution per Raw file. For typtic digests, peptides of charge 2 (one N-terminal and one at tryptic C-terminal R or K residue) should be dominant. Ionization issues (voltage?), in-source fragmentation, missed cleavages and buffer irregularities can cause a shift (see <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/mas.21544">Bittremieux 2017, DOI: 10.1002/mas.21544</a> ). The charge distribution should be similar across Raw files. Consistent charge distribution is paramount for comparable 3D-peak intensities across samples.</p>
 <p>Heatmap score [EVD: Charge]: Deviation of the charge 2 proportion from a representative Raw file (‘qualMedianDist’ function).</p>
 </div>
 <p style="text-align: right">
@@ -463,7 +463,7 @@ Internal metric to compute the average quality across all other metrics
 <div id="evd-id-rate-over-rt" class="section level2">
 <h2><span class="header-section-number">3.3</span> EVD: ID rate over RT <a name="EVDIDrateoverRT"></a></h2>
 <div class="helpText">
-<p>Judge column occupancy over retention time. Ideally, the LC gradient is chosen such that the number of identifications (here, after FDR filtering) is uniform over time, to ensure consistent instrument duty cycles. Sharp peaks and uneven distribution of identifications over time indicate potential for LC gradient optimization. See <a href="http://www.ncbi.nlm.nih.gov/pubmed/24700534">Moruz 2014, DOI: 10.1002/pmic.201400036</a> for details.</p>
+<p>Judge column occupancy over retention time. Ideally, the LC gradient is chosen such that the number of identifications (here, after FDR filtering) is uniform over time, to ensure consistent instrument duty cycles. Sharp peaks and uneven distribution of identifications over time indicate potential for LC gradient optimization. See <a href="https://pubmed.ncbi.nlm.nih.gov/24700534/">Moruz 2014, DOI: 10.1002/pmic.201400036</a> for details.</p>
 <p>Heatmap score [EVD: ID rate over RT]: Scored using ‘Uniform’ scoring function, i.e. constant receives good score, extreme shapes are bad.</p>
 </div>
 <p style="text-align: right">
@@ -679,7 +679,7 @@ Heatmap score [EVD: UpSet]: The proportion of sequences that the file has in com
 <div class="helpText">
 <p>MS/MS identifications can be ‘bad’ for a couple of reasons. It could be computational, i.e. ID rates are low because you specified the wrong protein database or modifications (not our concern here). Another reason is low/missing signals for fragment ions, e.g. due to bad (quadrupole/optics) ion transmission (charging effects), too small isolation windows, etc.</p>
 <p>Hence, we plot the TIC and base peak intensity of all MS/MS scans (incl. unidentified ones) per Raw file. Depending on the setup, these intensities can vary, but telling apart good from bad samples should never be a problem. If you only have bad samples, you need to know the intensity a good sample would reach.</p>
-<p>To automatically score this, we found that the TIC should be 10-100x larger than the base peak, i.e. there should be many other ions which are roughly as high (a good fragmentation ladder). If there are only a few spurious peaks (bad MS/MS), the TIC is much lower. Thus, we score the ratio BP * 10 &gt; TIC (this would be 100% score). If it’s only BP * 3 &lt; TIC, we say this MS/MS failed (0%). Anything between 3x and 10x gets a score in between. The score for the Raw file is computed as the median score across all its MS/MS scans.</p>
+<p>To automatically score this, we found that the TIC should be 10-100x larger than the base peak, i.e. there should be many other ions which are roughly as high (a good fragmentation ladder). If there are only a few spurious peaks (bad MS/MS), the TIC is much lower. Thus, we score the ratio BP * 10 &lt; TIC (this would be 100% score). If it’s only BP * 3 &gt; TIC, we say this MS/MS failed (0%). Anything between 3x and 10x gets a score in between. The score for the Raw file is computed as the median score across all its MS/MS scans.</p>
 Heatmap score [MS<sup>2</sup> Scans: Intensity]: Linear score (0-100%) between 3 &lt; (TIC / BP) &lt; 10.
 </div>
 <p style="text-align: right">
@@ -709,7 +709,7 @@ Heatmap score [MS<sup>2</sup> Scans: Intensity]: Linear score (0-100%) between 3
 <div id="ms2-scans-topn-over-rt" class="section level2">
 <h2><span class="header-section-number">3.24</span> MS2 Scans: TopN over RT <a name="MS2ScansTopNoverRT"></a></h2>
 <div class="helpText">
-<p>TopN over retention time. Similar to ID over RT, this metric reflects the complexity of the sample at any point in time. Ideally complexity should be made roughly equal (constant) by choosing a proper (non-linear) LC gradient. See <a href="http://www.ncbi.nlm.nih.gov/pubmed/24700534">Moruz 2014, DOI: 10.1002/pmic.201400036</a> for details.</p>
+<p>TopN over retention time. Similar to ID over RT, this metric reflects the complexity of the sample at any point in time. Ideally complexity should be made roughly equal (constant) by choosing a proper (non-linear) LC gradient. See <a href="https://pubmed.ncbi.nlm.nih.gov/24700534/">Moruz 2014, DOI: 10.1002/pmic.201400036</a> for details.</p>
 <p>Heatmap score [MS<sup>2</sup> Scans: TopN over RT]: Rewards uniform (function Uniform) TopN events over time.</p>
 </div>
 <p style="text-align: right">
@@ -729,7 +729,7 @@ Heatmap score [MS<sup>2</sup> Scans: Intensity]: Linear score (0-100%) between 3
 <div id="msms-s" class="section level2">
 <h2><span class="header-section-number">3.26</span> MSMS: s <a name="MSMSs"></a></h2>
 <div class="helpText">
-<p>Under optimal digestion conditions (high enzyme grade etc.), only few missed cleavages (MC) are expected. In general, increased MC counts also increase the number of peptide signals, thus cluttering the available space and potentially provoking overlapping peptide signals, biasing peptide quantification. Thus, low MC counts should be favored. Interestingly, it has been shown recently that incorporation of peptides with missed cleavages does not negatively influence protein quantification (see <a href="http://pubs.acs.org/doi/abs/10.1021/pr500294d">Chiva, C., Ortega, M., and Sabido, E. Influence of the Digestion Technique, Protease, and Missed Cleavage Peptides in Protein Quantitation. J. Proteome Res. 2014, 13, 3979-86</a> ). However this is true only if all samples show the same degree of digestion. High missed cleavage values can indicate for example, either a) failed digestion, b) a high (post-digestion) protein contamination, or c) a sample with high amounts of unspecifically degraded peptides which are not digested by trypsin.</p>
+<p>Under optimal digestion conditions (high enzyme grade etc.), only few missed cleavages (MC) are expected. In general, increased MC counts also increase the number of peptide signals, thus cluttering the available space and potentially provoking overlapping peptide signals, biasing peptide quantification. Thus, low MC counts should be favored. Interestingly, it has been shown recently that incorporation of peptides with missed cleavages does not negatively influence protein quantification (see <a href="https://pubs.acs.org/doi/abs/10.1021/pr500294d">Chiva, C., Ortega, M., and Sabido, E. Influence of the Digestion Technique, Protease, and Missed Cleavage Peptides in Protein Quantitation. J. Proteome Res. 2014, 13, 3979-86</a> ). However this is true only if all samples show the same degree of digestion. High missed cleavage values can indicate for example, either a) failed digestion, b) a high (post-digestion) protein contamination, or c) a sample with high amounts of unspecifically degraded peptides which are not digested by trypsin.</p>
 <p>If MC&gt;=1 is high (&gt;20%) you should increase the missed cleavages settings in MaxQuant and compare the number of peptides. Usually high MC correlates with bad identification rates, since many spectra cannot be matched to the forward database.</p>
 <p>In the rare case that ‘no enzyme’ was specified in MaxQuant, neither scores nor plots are shown.</p>
 <p>Heatmap score [MSMS: MC]: the fraction (0% - 100%) of fully cleaved peptides per Raw file</p>

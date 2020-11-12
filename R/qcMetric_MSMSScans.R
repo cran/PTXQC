@@ -11,7 +11,7 @@ qcMetric_MSMSScans_TopNoverRT =  setRefClass(
     helpTextTemplate = 
       "TopN over retention time. Similar to ID over RT, this metric reflects the complexity of the sample
 at any point in time. Ideally complexity should be made roughly equal (constant) by choosing a proper (non-linear) LC gradient.
-See [Moruz 2014, DOI: 10.1002/pmic.201400036](http://www.ncbi.nlm.nih.gov/pubmed/24700534) for details.
+See [Moruz 2014, DOI: 10.1002/pmic.201400036](https://pubmed.ncbi.nlm.nih.gov/24700534/) for details.
     
 Heatmap score [MS<sup>2</sup> Scans: TopN over RT]: Rewards uniform (function Uniform) TopN events over time.
 ",
@@ -70,7 +70,7 @@ should never be a problem. If you only have bad samples, you need to know the in
 To automatically score this, we found that the TIC should be 10-100x larger than the base peak, i.e. there 
 should be many other ions which are roughly as high (a good fragmentation ladder).
 If there are only a few spurious peaks (bad MS/MS), the TIC is much lower. Thus, we score the ratio 
-BP * 10 > TIC (this would be 100% score). If it's only BP * 3 < TIC, we say this MS/MS failed (0%).
+BP * 10 < TIC (this would be 100% score). If it's only BP * 3 > TIC, we say this MS/MS failed (0%).
 Anything between 3x and 10x gets a score in between. The score for the Raw file is computed as the
 median score across all its MS/MS scans.
 
