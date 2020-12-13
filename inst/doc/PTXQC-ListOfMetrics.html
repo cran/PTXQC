@@ -11,7 +11,7 @@
 
 <meta name="author" content="Chris Bielow chris.bielow@fu-berlin.de" />
 
-<meta name="date" content="2020-11-12" />
+<meta name="date" content="2020-12-11" />
 
 <title>List of Metrics</title>
 
@@ -365,7 +365,7 @@ summary {
 
 <h1 class="title toc-ignore">List of Metrics</h1>
 <h4 class="author">Chris Bielow <a href="mailto:chris.bielow@fu-berlin.de" class="email">chris.bielow@fu-berlin.de</a></h4>
-<h4 class="date">2020-11-12</h4>
+<h4 class="date">2020-12-11</h4>
 
 </div>
 
@@ -415,7 +415,7 @@ summary {
 <li><a href="#MS2ScansTopNIDoverN">MS2 Scans: TopN ID over N</a></li>
 <li><a href="#MS2ScansTopNoverRT">MS2 Scans: TopN over RT</a></li>
 <li><a href="#MSMSMS2Cal">MSMS: MS2 Cal</a></li>
-<li><a href="#MSMSs">MSMS: s</a></li>
+<li><a href="#MSMSMissedCleavagess">MSMS: Missed Cleavages s</a></li>
 <li><a href="#PARMQParameters">PAR: MQ Parameters</a></li>
 <li><a href="#PGContaminants">PG: Contaminants</a></li>
 <li><a href="#PGLFQintensity">PG: LFQ intensity</a></li>
@@ -726,8 +726,8 @@ Heatmap score [MS<sup>2</sup> Scans: Intensity]: Linear score (0-100%) between 3
 <a href="#TOP">– back to top –</a>
 </p>
 </div>
-<div id="msms-s" class="section level2">
-<h2><span class="header-section-number">3.26</span> MSMS: s <a name="MSMSs"></a></h2>
+<div id="msms-missed-cleavages-s" class="section level2">
+<h2><span class="header-section-number">3.26</span> MSMS: Missed Cleavages s <a name="MSMSMissedCleavagess"></a></h2>
 <div class="helpText">
 <p>Under optimal digestion conditions (high enzyme grade etc.), only few missed cleavages (MC) are expected. In general, increased MC counts also increase the number of peptide signals, thus cluttering the available space and potentially provoking overlapping peptide signals, biasing peptide quantification. Thus, low MC counts should be favored. Interestingly, it has been shown recently that incorporation of peptides with missed cleavages does not negatively influence protein quantification (see <a href="https://pubs.acs.org/doi/abs/10.1021/pr500294d">Chiva, C., Ortega, M., and Sabido, E. Influence of the Digestion Technique, Protease, and Missed Cleavage Peptides in Protein Quantitation. J. Proteome Res. 2014, 13, 3979-86</a> ). However this is true only if all samples show the same degree of digestion. High missed cleavage values can indicate for example, either a) failed digestion, b) a high (post-digestion) protein contamination, or c) a sample with high amounts of unspecifically degraded peptides which are not digested by trypsin.</p>
 <p>If MC&gt;=1 is high (&gt;20%) you should increase the missed cleavages settings in MaxQuant and compare the number of peptides. Usually high MC correlates with bad identification rates, since many spectra cannot be matched to the forward database.</p>
