@@ -113,13 +113,13 @@ boxplotCompare = function(data,
       geom_boxplot(varwidth = TRUE) +
       xlab("") + 
       ylab(ylab) +
-      ylim(ylims) +
+      coord_cartesian(ylim = ylims) + ## avoid Warning: Removed xxx rows containing non-finite values (stat_boxplot), because a simple ylim(ylims) would replace outliers by
       scale_alpha(guide = FALSE) +
       scale_fill_manual(values = cols, name = "Category") + 
       scale_color_manual(values = dark_cols, name = "Category") + 
       theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
       theme(legend.position = ifelse(length(cols)==1, "none", "right")) +
-      addGGtitle(mainlab, sublab) + 
+      ggtitle(mainlab, sublab) + 
       scale_x_discrete_reverse(factor(unique(data$group)))
     
     if (!is.na(abline))
@@ -204,11 +204,11 @@ getFragmentErrors = function(x, recurse = 0)
   abs_error95 = quantile(abs(err), probs = 0.95)
   ## if dimension (Da vs ppm) seem weird, try switching to the other -- but avoid infinite recursion
   if (recurse == 0 & (ms2_unit == "[ppm]") & (abs_error95 > 200)) {
-    warning(paste0("MS/MS fragment error seems rather large ", abs_error95, ". Reporting in [Da]...\n"))
+    message(paste0("MS/MS fragment error seems rather large ", abs_error95, ". Reporting in [Da]...\n"))
     x$mass.analyzer = "ITMS"
     return (getFragmentErrors(x, recurse = 1))
   } else if (recurse == 0 & (ms2_unit == "[Da]") & (abs_error95 < 0.2)) {
-    warning(paste0("MS/MS fragment error seems rather small ", abs_error95, ". Reporting in [ppm]...\n"))
+    message(paste0("MS/MS fragment error seems rather small ", abs_error95, ". Reporting in [ppm]...\n"))
     x$mass.analyzer = paste0(" ", x$mass.analyzer); ## just something which the regex above does not recognize and fallback to ppm
     return (getFragmentErrors(x, recurse = 1))
   }

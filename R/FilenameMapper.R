@@ -62,25 +62,41 @@ getShortNames = function(.self, raw_filenames, max_length = 10, ms_runs = NULL)
   
   cat(paste0("Adding fc.raw.file column ..."))
   ## if there is no mapping, or if its incomplete (outdated mapping file)
-  if (nrow(.self$raw_file_mapping) == 0 || any(is.na(match(raw_filenames, .self$raw_file_mapping$from))))
-  { ## --> redo
+  has_mapping = (nrow(.self$raw_file_mapping) != 0)
+  incomplete_mapping = has_mapping && any(is.na(match(raw_filenames, .self$raw_file_mapping$from)))
+  if (!has_mapping || incomplete_mapping)
+  { 
+    ## if the mapping is 'auto', we got handed an incomplete/different txt file before, which does not match
+    ## the current file. Some files got mixed up, so we stop!
+    if (incomplete_mapping)
+    {
+      if (is.na(.self$mapping.creation))
+      {
+        stop("mapping.creation member not properly initialized!")
+      }
+      ## we had NA's in auto mode ... bad
+      if (.self$mapping.creation == .self$getMappingCreation()['auto'])
+      { ## mapping is incomplete
+        missing = unique(raw_filenames[is.na(match(raw_filenames, .self$raw_file_mapping$from))])
+        stop(paste0("Hithero unknown Raw files: ", paste(missing, collapse=", ", sep=""), " encountered which were not present in previous data files.\nDid you mix output files from different analyses?"))
+      } 
+    }
+    ## --> redo
     rfm = .self$getShortNamesStatic(unique(raw_filenames), max_length)
     if (!is.null(ms_runs)) {
       rfm$ms.run = ms_runs[ match(rfm$from, raw_filenames)  ]
     }
+    ## and remember it
     .self$raw_file_mapping = rfm
+    cat("Created a new filename mapping:\n")
+    print(rfm)
+    
     ## indicate to outside that a new table is ready
     .self$mapping.creation = .self$getMappingCreation()['auto']
   }
   ## do the mapping    
   v.result = as.factor(.self$raw_file_mapping$to[match(raw_filenames, .self$raw_file_mapping$from)])
   
-  ## check for NA's
-  if (any(is.na(v.result)))
-  { ## if mapping is incomplete
-    missing = unique(raw_filenames[is.na(v.result)])
-    stop(paste0("Hithero unknown Raw files: ", paste(missing, collapse=", ", sep=""), " encountered in file '", file, "' which were not present in previous data files.\nPlease delete the file or fix it."))
-  } 
   cat(paste0(" done\n"))
   return (v.result)
 }, 
@@ -169,19 +185,21 @@ plotNameMapping = function(.self)
   #mq_mapping = mq$raw_file_mapping
   mq_mapping = .self$raw_file_mapping
   pl_title = "Mapping of Raw files to their short names\nMapping source: " %+% .self$mapping.creation %+% extra;
-  
+
   mappingChunk = function(mq_mapping)
   {
     mq_mapping$ypos = -(1:nrow(mq_mapping))
     head(mq_mapping)
-    mq_mapping.long = reshape2::melt(mq_mapping, id.vars = c("ypos"))
+    ## convert factors to string, because they will all end up in a common 'value' column
+    mq_mapping.s = data.frame(lapply(mq_mapping, function(x) if (is.factor(x)) as.character(x) else {x}), stringsAsFactors= FALSE)
+    mq_mapping.long = reshape2::melt(mq_mapping.s, id.vars = c("ypos"), value.name = "value")
     head(mq_mapping.long)
     mq_mapping.long$variable = as.character(mq_mapping.long$variable)
     mq_mapping.long$col = "#000000";
     mq_mapping.long$col[mq_mapping.long$variable=="to"] = "#5F0000"
     mq_mapping.long$variable[mq_mapping.long$variable=="from"] = xpos[1]
     mq_mapping.long$variable[mq_mapping.long$variable=="to"] = xpos[2]
-    if (nchar(extra)) mq_mapping.long$variable[mq_mapping.long$variable=="best.effort"] = xpos[3]
+    mq_mapping.long$variable[mq_mapping.long$variable=="best.effort"] = xpos[3]
     mq_mapping.long$variable = as.numeric(mq_mapping.long$variable)
     mq_mapping.long$size = 2;
     
@@ -190,7 +208,6 @@ plotNameMapping = function(.self)
     mq_mapping.long2$hpos = 0 ## left aligned,  1=right aligned
     mq_mapping.long2$hpos[mq_mapping.long2$variable==xpos[1]] = 1
     mq_mapping.long2$hpos[mq_mapping.long2$variable==xpos[2]] = 0
-    if (nchar(extra)) mq_mapping.long2$hpos[mq_mapping.long2$variable==xpos[3]] = 0
     
     mqmap_pl = ggplot(mq_mapping.long2, aes_string(x = "variable", y = "ypos"))  +
       geom_text(aes_string(label="value"), color = mq_mapping.long2$col, hjust=mq_mapping.long2$hpos, size=mq_mapping.long2$size) +
@@ -274,7 +291,7 @@ readMappingFile = function(.self, filename)
     }
     .self$raw_file_mapping = dfs
     ## set who defined it
-    .self$mapping.creation = 'file (user-defined)'
+    .self$mapping.creation = .self$getMappingCreation()['user']
     .self$external.mapping.file = filename; ## remember filename for later error messages
     return (TRUE)
   }

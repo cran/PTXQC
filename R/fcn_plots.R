@@ -20,8 +20,9 @@ plot_ContsPG = function(data)
 {
   data$section = as.integer(seq(0, nrow(data)/correctSetSize(nrow(data),30)*0.999, length.out=nrow(data)))
   p = ggplot(data=data, aes_string(x = "group", y = "cont_pc", alpha="logAbdClass")) +
+        suppressWarnings(## supresses 'Using alpha for a discrete variable is not advised'
         scale_alpha_discrete(range = c(c(0.3, 1)[(length(unique(data$logAbdClass))==1) + 1], 1.0), ## ordering of range is critical!
-                             name = "Abundance\nclass") +
+                             name = "Abundance\nclass")) +
         geom_col() +
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
         xlab("")  +
@@ -79,7 +80,7 @@ plot_ContUser = function(data, name_contaminant, extra_limit, subtitle = NULL)
   maxY = max(datav$value, extra_limit)
   p = ggplot(datav, aes_string(x = "fc.raw.file", y = "value")) +
         geom_col(aes_string(fill = "variable"), position = "dodge", width=.7) +
-        addGGtitle(paste0("EVD: Contaminant '", name_contaminant, "'"), subtitle) +
+        ggtitle(paste0("EVD: Contaminant '", name_contaminant, "'"), subtitle) +
         xlab("")  +
         ylab("abundance fraction (%)") +
         ylim(c(0, maxY * 1.1)) +
@@ -196,8 +197,9 @@ plot_ContEVD = function(data, top5)
                                   y = "s.intensity", 
                                fill = "Protein")) +
         geom_col(aes_string(alpha = "Log10Diff")) +
-        scale_alpha_discrete(range = c(c(0.3, 1)[(length(unique(d_sum$Log10Diff))==1) + 1], 1.0),
-                             name = "Abundance\nclass") +
+        suppressWarnings(## supresses 'Using alpha for a discrete variable is not advised'
+          scale_alpha_discrete(range = c(c(0.3, 1)[(length(unique(d_sum$Log10Diff))==1) + 1], 1.0),
+                               name = "Abundance\nclass")) +
         xlab("")  +
         theme_bw() +
         ggtitle("EVD: Top5 Contaminants per Raw file") +
@@ -240,7 +242,7 @@ plot_ContEVD = function(data, top5)
 #'  data = data.frame( x = c(x1,x2),
 #'                     y = c(y1,y2), 
 #'                     col = c(rep("ok", length(x1)), rep("shifted", length(x2))), 
-#'                     ltype = "dotted")
+#'                     ltype = c(rep("solid", length(x1)), rep("dotted", length(x2))))
 #'  plot_RatiosPG(data, range(data$x), "Ratio plot", "red", "group")
 #' 
 plot_RatiosPG = function(df_ratios, d_range, main_title, main_col, legend_title)
@@ -256,10 +258,10 @@ plot_RatiosPG = function(df_ratios, d_range, main_title, main_col, legend_title)
     ylab("density")  +
     scale_fill_manual(values = rep(RColorBrewer::brewer.pal(6,"Accent"), times=40), guide_legend(legend_title)) + 
     scale_colour_manual(values = rep(RColorBrewer::brewer.pal(6,"Accent"), times=40)) +
-    scale_alpha_discrete(range = c(1, 0.2), 
+    suppressWarnings(scale_alpha_discrete(range = c(1, 0.2), 
                          labels=c("dotted"="unimodal", "solid"="multimodal"),
                          guide_legend("shape")
-    ) +
+    )) +
     scale_x_continuous(limits = d_range, trans = "identity", breaks = c(-br, 0, br), labels=c(paste0("1/",2^(br)), 1, 2^br)) +
     guides(colour = FALSE) +
     theme(plot.title = element_text(colour = main_col)) +
@@ -303,7 +305,7 @@ plot_CountData = function(data, y_max, thresh_line, title)
         scale_x_discrete_reverse(data$fc.raw.file) +
         ylim(0, y_max) +
         scale_fill_manual(values = c("green", "#BEAED4", "blue")) +
-        addGGtitle(title_main, title_sub) + 
+        ggtitle(title_main, title_sub) + 
         geom_abline(alpha = 0.5, intercept = thresh_line, slope = 0, colour = "black", linetype = "dashed", size = 1.5) +
         coord_flip()
   return(p)
@@ -404,7 +406,7 @@ plot_MBRAlign = function(data, y_lim, title_sub, match_tol)
         xlab("corrected RT [min]") +
         ylab(expression(Delta*"RT [min]")) +
         facet_wrap(~ fc.raw.file_ext) +
-        addGGtitle("EVD: MBR - alignment", title_sub)  
+        ggtitle("EVD: MBR - alignment", title_sub)  
   #print(p)
   return(p)
 }
@@ -499,7 +501,7 @@ plot_MBRgain = function(data, title_sub = "")
 {
   p = ggplot(data = data, aes_string(x = "abs", y = "pc", col = "fc.raw.file")) + 
         geom_point(size=2) + 
-        addGGtitle("EVD: Peptides inferred by MBR", title_sub) +
+        ggtitle("EVD: Peptides inferred by MBR", title_sub) +
         xlab("number of transferred ID's") +
         ylab("gain on top of genuine IDs [%]") +
         xlim(0, max(data$abs, na.rm = TRUE)*1.1) + ## accounting for labels near the border
@@ -885,7 +887,7 @@ plot_UncalibratedMSErr = function(data, MQBug_raw_files, stats, y_lim, extra_lim
                    colour="red",
                    linetype = "longdash") +  ## == vline for coord_flip
         coord_flip() +
-        addGGtitle("EVD: Uncalibrated mass error", title_sub)
+        ggtitle("EVD: Uncalibrated mass error", title_sub)
 
   #print(p)
   return(p)
@@ -942,7 +944,7 @@ plot_CalibratedMSErr = function(data, MQBug_raw_files, stats, y_lim, extra_limit
     ylim(y_lim) +
     scale_x_discrete_reverse(data$fc.raw.file) +
     coord_flip() +
-    addGGtitle("EVD: Calibrated mass error", title_sub)
+    ggtitle("EVD: Calibrated mass error", title_sub)
   if (!is.na(extra_limit)) {
     p = p + geom_hline(yintercept = c(-extra_limit, extra_limit), colour="red", linetype = "longdash")  ## == vline for coord_flip
   }
@@ -1075,7 +1077,7 @@ plot_MissedCleavages = function(data, title_sub = "")
         geom_abline(alpha = 0.5, intercept = 0.75, slope = 0, colour = "black", linetype = "dashed", size = 1.5) +
         coord_flip() +
         scale_x_discrete_reverse(st_bin.m$fc.raw.file) +
-        addGGtitle("MSMS: Missed cleavages per Raw file", title_sub)
+        ggtitle("MSMS: Missed cleavages per Raw file", title_sub)
   
   #print(p)
   return(p)

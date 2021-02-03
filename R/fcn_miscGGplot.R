@@ -118,30 +118,6 @@ ggAxisLabels = function(x, n = 20)
 }
 
 
-#' Add title and subtitle to a ggplot
-#' 
-#' Found in http://www.antoni.fr/blog/?p=39 .. whewww... modified a little
-#' 
-#' Usage: 
-#'   ggplot(...) + geom_X(...) + addGGtitle(...)
-#'   
-#' @param main String for main title
-#' @param sub Optional string for sub title
-#' @return A ggplot object
-#' 
-#' @import ggplot2
-#' @export
-#' 
-addGGtitle = function(main, sub = NULL){
-  if (is.null(sub) || sub=="") {
-    pl = ggtitle(main)
-  } else {
-    pl = ggtitle(eval(parse(text=paste("expression(atop(\"",main, "\",", " scriptstyle(\"", sub , "\")))", sep=""))))
-  }
-  return (pl)
-}
-
-
 #' 
 #' Distribute a set of points with fixed y-values on a stretch of the x-axis.
 #' 
@@ -204,6 +180,6 @@ brewer.pal.Safe = function(n = 3, palette = "Set1")
   idx = which(rownames(RColorBrewer::brewer.pal.info) == palette)
   if (length(idx) != 1) stop("Palette ", palette," unknown!")
   if (RColorBrewer::brewer.pal.info$maxcolors[idx] < n) stop("Palette ", palette, " provides ", RColorBrewer::brewer.pal.info$maxcolors[idx], " colors, but not ", n, " as requested!")
-  
-  return (RColorBrewer::brewer.pal(n, palette))
+  ## avoid warning about less than 3 colors, if n<3
+  return (RColorBrewer::brewer.pal(max(3,n), palette)[1:n])
 }

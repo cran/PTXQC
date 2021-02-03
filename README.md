@@ -1,6 +1,7 @@
 PTXQC
 ---------------
 
+[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause)
 [![Build Status](https://travis-ci.org/cbielow/PTXQC.svg?branch=master)](https://travis-ci.org/cbielow/PTXQC) 
 [![Project Stats](https://www.openhub.net/p/PTXQC/widgets/project_thin_badge.gif)](https://www.openhub.net/p/PTXQC)
 
@@ -8,11 +9,10 @@ PTXQC
 
 ### Latest changes / ChangeLog
 
-  
+  - v1.00.09 - Jan 2021: output logging to external file (#94); mzQC support (partial); less warnings;
   - v1.00.08 - Dec 2020: fix issues with two metrics (#90, #91)
   - v1.00.07 - Nov 2020: fix issues with creating intermediate Rplots.pdf
   - v1.00.05 - Jun 2020: mzTab fixes introduced in v1.0.4
-  - v1.00.04 - Mar 2020: mzTab support for iTRAQ/TMT; minor fixes
 
 See [NEWS][News_File] file for a version history.
 
@@ -135,6 +135,7 @@ In certain situations, the whole txt-folder or a single MaxQuant/mzTab file migh
 ### Contributing - Get Involved!
 
 We welcome input from our user base!
+PTX-QC has a very permissive **BSD-3 clause License** (see [DESCRIPTION](DESCRIPTION) file), so feel free to fork, patch and contribute!
 There are many ways to get involved, _you do not need to be a developer_!
   - suggest a new metric (and why you think it's useful) by opening [a new ticket][issuetracker] here on GitHub.
   - suggest changes to existing metrics (improvements or bugfixes), see above.
