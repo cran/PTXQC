@@ -9,6 +9,8 @@ PTXQC
 
 ### Latest changes / ChangeLog
 
+
+  - v1.00.10 - May 2021: detect non UK/US locale (#98); Revive missing MBR metrics (#97); restore full Parameter list (showing MaxQuant parameters (#101); decoy distribution in MS/MS mass error plot restored (#102)
   - v1.00.09 - Jan 2021: output logging to external file (#94); mzQC support (partial); less warnings;
   - v1.00.08 - Dec 2020: fix issues with two metrics (#90, #91)
   - v1.00.07 - Nov 2020: fix issues with creating intermediate Rplots.pdf

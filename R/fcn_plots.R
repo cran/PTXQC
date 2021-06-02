@@ -869,7 +869,6 @@ plot_UncalibratedMSErr = function(data, MQBug_raw_files, stats, y_lim, extra_lim
   data$col[data$fc.raw.file %in% stats$fc.raw.file[stats$outOfCal]] = "out-of-search-tol"
   ## only show legend if special things happen  
   showColLegend = ifelse(length(setdiff(data$col, "default")) > 0, "legend", "none")
-  
   ## amend SD to fc.raw.file
   stats$fcr_new_lvl = paste0(stats$fc.raw.file, " (sd = ", stats$sd_uncal, "ppm)")
   
@@ -882,7 +881,8 @@ plot_UncalibratedMSErr = function(data, MQBug_raw_files, stats, y_lim, extra_lim
         ylab(expression(Delta~"mass [ppm]")) +
         xlab("") +
         ylim(y_lim) +
-        scale_x_discrete_reverse(data$fc.raw.file_ext) +
+        #scale_x_discrete_reverse(data$fc.raw.file_ext) +
+        scale_x_discrete(limits=rev) +
         geom_hline(yintercept = c(-extra_limit, extra_limit), 
                    colour="red",
                    linetype = "longdash") +  ## == vline for coord_flip
@@ -942,7 +942,8 @@ plot_CalibratedMSErr = function(data, MQBug_raw_files, stats, y_lim, extra_limit
     ylab(expression(Delta~"mass [ppm]")) +
     xlab("") +
     ylim(y_lim) +
-    scale_x_discrete_reverse(data$fc.raw.file) +
+    #scale_x_discrete_reverse(data$fc.raw.file) +
+    scale_x_discrete(limits=rev) +
     coord_flip() +
     ggtitle("EVD: Calibrated mass error", title_sub)
   if (!is.na(extra_limit)) {
@@ -1026,15 +1027,16 @@ plot_MS2Decal = function(data)
     qnt = quantile(x$msErr, probs = c(0.02, 0.98), na.rm = TRUE)
     return (x[qnt[1] < x$msErr & x$msErr < qnt[2], ])
   })
+  p = ggplot(data2, aes_string(x = "msErr", fill="type", alpha="0.9")) + 
+    ## individual bin width for each raw file by using a function
+    geom_histogram(binwidth = function(x) {diff(range(x, na.rm = TRUE))/30}) +
+    xlab("fragment mass delta") +  
+    scale_alpha(guide = "none") +
+    ylab("count") + 
+    scale_fill_manual(values = c(forward = "#99d594", decoy = "#ff0000")) +
+    ggtitle("MSMS: Fragment mass errors per Raw file") +
+    facet_wrap(~file, scales = "fixed")
   
-  p = ggplot(data2, aes_string(x = "msErr", fill="type")) + 
-        ## individual bin width for each raw file by using a function
-        geom_histogram(binwidth = function(x) {diff(range(x, na.rm = TRUE))/30}) +
-        xlab("fragment mass delta") +  
-        ylab("count") + 
-        scale_fill_manual(values = c(forward = "#99d594", decoy = "#ff0000")) +
-        ggtitle("MSMS: Fragment mass errors per Raw file") +
-        facet_wrap(~file, scales = "fixed")
       
   #print(p)
   return(p)
