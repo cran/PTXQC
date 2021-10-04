@@ -7,6 +7,11 @@ Versions uploaded to CRAN are marked with [CRAN].
 #########   CHANGELOG  ##########
 #################################
 
+[CRAN] v1.00.11 -- 2021/09/28
+  - [FEATURE] initial support for mzQC Quality Control output (pr #105)
+  - [FEATURE] missed cleavages metric can be computed from evidence.txt now (pr #104)
+  - [FIX] MSMSScans metric will crash on exotic data (pr #107)
+
 [CRAN] v1.0.10 -- 2021/05/29
   - [FEATURE] detect if MaxQuant was run with wrong decimal separator (non UK/US locale) (issue #98)
   - [FIX] issue #97 Revive missing MBR metrics (introduced in PTXQC 1.0.9)

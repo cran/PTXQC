@@ -263,7 +263,7 @@ plot_RatiosPG = function(df_ratios, d_range, main_title, main_col, legend_title)
                          guide_legend("shape")
     )) +
     scale_x_continuous(limits = d_range, trans = "identity", breaks = c(-br, 0, br), labels=c(paste0("1/",2^(br)), 1, 2^br)) +
-    guides(colour = FALSE) +
+    guides(color = "none") +
     theme(plot.title = element_text(colour = main_col)) +
     theme_bw() +
     geom_vline(alpha = 0.5, xintercept = 0, colour = "green", linetype = "dashed", size = 1.5) +
@@ -506,7 +506,7 @@ plot_MBRgain = function(data, title_sub = "")
         ylab("gain on top of genuine IDs [%]") +
         xlim(0, max(data$abs, na.rm = TRUE)*1.1) + ## accounting for labels near the border
         ylim(0, max(data$pc, na.rm = TRUE)*1.1) +
-        guides(color="none") +
+        guides(color = "none") +
         geom_text(aes_string(hjust = -0.1, label = "fc.raw.file"), show.legend = FALSE, check_overlap = TRUE)
   #print(p)
   return(p)
@@ -643,7 +643,7 @@ plot_IDRate = function(data, id_rate_bad, id_rate_great, label_ID)
         scale_colour_manual(values=label_ID) + 
         ggtitle("SM: MS/MS identified per Raw file") + 
         xlim(0, max(data$ms.ms.identified...., id_rate_great)*1.1) + 
-        guides(color=guide_legend(title="ID class")) +
+        guides(color = guide_legend(title="ID class")) +
         scale_y_discrete_reverse(data$fc.raw.file, breaks = ggAxisLabels)
   #print(p)
   return(p)
@@ -1027,17 +1027,14 @@ plot_MS2Decal = function(data)
     qnt = quantile(x$msErr, probs = c(0.02, 0.98), na.rm = TRUE)
     return (x[qnt[1] < x$msErr & x$msErr < qnt[2], ])
   })
-  p = ggplot(data2, aes_string(x = "msErr", fill="type", alpha="0.9")) + 
-    ## individual bin width for each raw file by using a function
-    geom_histogram(binwidth = function(x) {diff(range(x, na.rm = TRUE))/30}) +
+  p = ggplot(data2, aes_string(x = "msErr", fill="type")) + 
+    geom_histogram(bins = 30) +
     xlab("fragment mass delta") +  
-    scale_alpha(guide = "none") +
     ylab("count") + 
     scale_fill_manual(values = c(forward = "#99d594", decoy = "#ff0000")) +
     ggtitle("MSMS: Fragment mass errors per Raw file") +
     facet_wrap(~file, scales = "fixed")
   
-      
   #print(p)
   return(p)
 }
