@@ -197,7 +197,7 @@ plot_ContEVD = function(data, top5)
                                   y = "s.intensity", 
                                fill = "Protein")) +
         geom_col(aes_string(alpha = "Log10Diff")) +
-        suppressWarnings(## supresses 'Using alpha for a discrete variable is not advised'
+        suppressWarnings(## suppresses 'Using alpha for a discrete variable is not advised'
           scale_alpha_discrete(range = c(c(0.3, 1)[(length(unique(d_sum$Log10Diff))==1) + 1], 1.0),
                                name = "Abundance\nclass")) +
         xlab("")  +
@@ -545,7 +545,7 @@ plot_Charge = function(d_charge)
         xlab("Raw file") +
         ylab("fraction [%]") +
         guides(fill = guide_legend(title="charge"),
-                                   color = FALSE) + # avoid black line in legend
+                                   color = "none") + # avoid black line in legend
         scale_x_reverse() +
         coord_flip() +
         theme(axis.text.y = element_blank(), axis.ticks = element_blank()) +
@@ -595,7 +595,7 @@ plot_IDsOverRT = function(data, x_lim = range(data$RT), y_max = max(data$counts)
     ylim(from = 0, to = y_max) +
     ylab("ID count") +
     ggtitle("EVD: IDs over RT") +
-    guides(colour = guide_legend(title="Raw file"), linetype = FALSE) +
+    guides(colour = guide_legend(title="Raw file"), linetype = "none") +
     scale_linetype_manual(values = rep_len(c("solid", "dashed"), nrOfRaws)) +
     scale_color_manual(values = brewer.pal.Safe(nrOfRaws, "Set1")) 
   #print(p)
@@ -875,9 +875,12 @@ plot_UncalibratedMSErr = function(data, MQBug_raw_files, stats, y_lim, extra_lim
   ## use augmented name
   data$fc.raw.file_ext = stats$fcr_new_lvl[ match(data$fc.raw.file, stats$fc.raw.file) ]
 
+  cols_sub = c("default"="black", "MQ bug"="red", "out-of-search-tol"="orange")
+  cols_sub = cols_sub[names(cols_sub) %in% data$col]
+  
   p = ggplot(data, col=data$col) +
         geom_boxplot(aes_string(x = "fc.raw.file_ext", y = "uncalibrated.mass.error..ppm.", col="col"), varwidth = TRUE, outlier.shape = NA) +
-        scale_colour_manual("", values = c("default"="black", "MQ bug"="red", "out-of-search-tol"="orange"), guide = showColLegend) +
+        scale_colour_manual("", values = cols_sub, guide = showColLegend) +
         ylab(expression(Delta~"mass [ppm]")) +
         xlab("") +
         ylim(y_lim) +
@@ -935,10 +938,13 @@ plot_CalibratedMSErr = function(data, MQBug_raw_files, stats, y_lim, extra_limit
   ## only show legend if special things happen  
   showColLegend = ifelse(length(setdiff(data$col, "default")) > 0, "legend", "none")
   
+  cols_sub = c("default"="black", "MQ bug"="red", "out-of-search-tol"="orange")
+  cols_sub = cols_sub[names(cols_sub) %in% data$col]
+  
   ## plot
   p = ggplot(data, col = data$col) +
     geom_boxplot(aes_string(x = "fc.raw.file", y = "mass.error..ppm.", col="col"), varwidth = TRUE, outlier.shape = NA) +
-    scale_colour_manual("", values = c("default"="black", "MQ bug"="red", "out-of-search-tol"="orange"), guide = showColLegend) +
+    scale_colour_manual("", values = cols_sub, guide = showColLegend) +
     ylab(expression(Delta~"mass [ppm]")) +
     xlab("") +
     ylim(y_lim) +

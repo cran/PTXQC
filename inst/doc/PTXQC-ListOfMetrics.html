@@ -11,7 +11,7 @@
 
 <meta name="author" content="Chris Bielow chris.bielow@fu-berlin.de" />
 
-<meta name="date" content="2021-10-02" />
+<meta name="date" content="2021-11-03" />
 
 <title>List of Metrics</title>
 
@@ -351,7 +351,7 @@ pre code {
 
 <h1 class="title toc-ignore">List of Metrics</h1>
 <h4 class="author">Chris Bielow <a href="mailto:chris.bielow@fu-berlin.de" class="email">chris.bielow@fu-berlin.de</a></h4>
-<h4 class="date">2021-10-02</h4>
+<h4 class="date">2021-11-03</h4>
 
 </div>
 
@@ -460,9 +460,9 @@ Internal metric to compute the average quality across all other metrics
 <h2><span class="header-section-number">3.4</span> EVD: MBR Align <a name="EVDMBRAlign"></a></h2>
 <div class="helpText">
 <p>MBR Alignment: First of two steps (1=align, 2=transfer) during Match-between-runs. This plot is based purely on real MS/MS ids. Ideally, RTs of identical peptides should be equal (i.e. very small residual RT delta) across Raw files after alignment.</p>
-<p>MaxQuants RT correction is shown in blue – it should be well within the alignment search window (20min by default) set during MaxQuant configuration. The resulting residual RT delta after RT alignment (compared to a reference Raw file), is shown as green/red dots. One dot represents one peptide (incl. charge). Every dot (peptide) outside an allowed residual delta RT (1min by default) is colored red. All others are green.</p>
+<p>MaxQuants RT correction is shown in blue – it should be well within the alignment search window (20min by default) set during MaxQuant configuration. The resulting residual RT delta after RT alignment (compared to a reference Raw file), is shown as green/red dots. One dot represents one peptide (incl. charge). Every dot (peptide) outside an allowed residual delta RT (1min by default) is colored red. All others are green. The ratio of ‘green’ vs. ‘green+red’ peptides is annotated using ‘sc:’ (for ‘score’) in the plot subtitles. High values are better (green peptides dominate).</p>
 <p>If moving ‘red’ dots to the horizontal zero-line (to make them green) requires large RT shifts, then increasing the alignment search window might help MaxQuant to find a better alignment.</p>
-<p>Heatmap score [EVD: MBR Align]: fraction of ‘green’ vs. ‘green+red’ peptides.</p>
+<p>Heatmap score [EVD: MBR Align]: ratio of ‘green’ vs. ‘green+red’ peptides</p>
 </div>
 <p style="text-align: right">
 <a href="#TOP">– back to top –</a>
@@ -600,6 +600,7 @@ Peptides in the ‘genuine + transferred’ category were identified within the 
 <h2><span class="header-section-number">3.16</span> EVD: Contaminants <a name="EVDContaminants"></a></h2>
 <div class="helpText">
 <p>PTXQC will explicitly show the five most abundant external protein contaminants (as detected via MaxQuant’s contaminants FASTA file) by Raw file, and summarize the remaining contaminants as ‘other’. This allows to track down which proteins exactly contaminate your sample. Low contamination is obviously better. The ‘Abundance class’ models the average peptide intensity in each Raw file and is visualized using varying degrees of transparency. It is not unusual to see samples with low sample content to have higher contamination. If you see only one abundance class (‘mid’), this means all your Raw files have roughly the same peptide intensity distribution.</p>
+<p>If you see less than 5 contaminants, it either means there are actually less, or that one (or more) of the shortened contaminant names subsume multiple of the top5 contaminants (since they start with the same prefix).</p>
 <p>Heatmap score [EVD: Contaminants]: as fraction of summed intensity with 0 = sample full of contaminants; 1 = no contaminants</p>
 </div>
 <p style="text-align: right">
