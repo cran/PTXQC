@@ -65,7 +65,7 @@ createReport = function(txt_folder = NULL, mztab_file = NULL, yaml_obj = list(),
   ###
   ###  prepare the YAML config
   ###
-  if (class(yaml_obj) != "list")
+  if (!inherits(yaml_obj, "list"))
   {
     stop(paste0("Argument 'yaml_obj' is not of type list\n"));
   }
@@ -167,7 +167,8 @@ createReport = function(txt_folder = NULL, mztab_file = NULL, yaml_obj = list(),
   
   ## get full filenames (and their suffix -- for mzQC metadata)
   file_meta = QCMetaFilenames$new()
-  file_meta$data = getMetaFilenames(txt_files$mqpar, base_folder)
+  ## does only work if mqpar.xml is present (for now)
+  if (!MZTAB_MODE) file_meta$data = getMetaFilenames(txt_files$mqpar, base_folder)
   ## --> wherever you need this data, simply re-grab the singleton using 'QCMetaFilenames$new()$data'
   
   ######
@@ -374,7 +375,7 @@ createReport = function(txt_folder = NULL, mztab_file = NULL, yaml_obj = list(),
     } 
     
     ### warn of special contaminants!
-    if (class(yaml_param$yaml_contaminants) == "list")  ## SC are requested
+    if (inherits(yaml_param$yaml_contaminants, "list"))  ## SC are requested
     {
       if (!is.null(df_pg))
       {

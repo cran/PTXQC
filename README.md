@@ -9,6 +9,8 @@ PTXQC
 
 ### Latest changes / ChangeLog
 
+
+  - v1.00.13 - Mar 2022: internal changes (removed a deprecated dependency)
   - v1.00.12 - Nov 2021: Documentation and cosmetic fixes (https://github.com/cbielow/PTXQC/pull/109); improved legends, better links in Html reports (https://github.com/cbielow/PTXQC/pull/111); avoid crash on datasets with only a single MS/MS spectrum (https://github.com/cbielow/PTXQC/pull/112)
   - v1.00.11 - Sep 2021: initial support for mzQC Quality Control output (https://github.com/cbielow/PTXQC/pull/105); Missed cleavages can be computed from evidence.txt (https://github.com/cbielow/PTXQC/pull/104); minor fixes
   - v1.00.10 - May 2021: detect non UK/US locale (https://github.com/cbielow/PTXQC/pull/99); Revive missing MBR metrics (https://github.com/cbielow/PTXQC/issues/97); restore full Parameter list (showing MaxQuant parameters (https://github.com/cbielow/PTXQC/issues/101); decoy distribution in MS/MS mass error plot restored (https://github.com/cbielow/PTXQC/issues/102)
@@ -54,6 +56,13 @@ DOI: [10.1021/acs.jproteome.5b00780][JPR_paper]
 
 
 ### Documentation
+
+A short **overview video** on PTX-QC] can be found [here](https://youtu.be/sb-mydbNRS4). 
+If you want to jump to certain sections:
+ - [Motivation for doing QC](https://youtu.be/sb-mydbNRS4?t=75)
+ - [Installation demo](https://youtu.be/sb-mydbNRS4?t=522)
+ - [Report Generation using Drag'n'Drop](https://youtu.be/sb-mydbNRS4?t=880)
+ - [Inspecting and configuring a Report](https://youtu.be/sb-mydbNRS4?t=1043)
   
 Besides this documentation on GitHub, the package vignettes
 of PTXQC will give you valuable information. *After* the package is installed (see below),
@@ -76,13 +85,17 @@ The 'List of Metrics' vignette contains a full description for each metric (as s
   
 ### Installation
 
+**You can use PTX-QC without installing it, by using our webserver:**
+Visit [ptxqc.bsc.fu-berlin.de](http://ptxqc.bsc.fu-berlin.de) and simply upload your data.
+This service is not suited for large-scale data analysis, but should be fine for the occasional analysis.
+
 **If you want to generate QC reports without actually getting involved in R:**
 
 We offer a Batch-file based Drag'n'drop mechanism to trigger PTXQC on any MaxQuant output folder.
 This only works for Windows (not Linux or MacOS) at the moment -- but you have a Windows anyway to run MaxQuant, right?!
 See [drag'n'drop][1] for details. It takes 10 minutes and you are done!
 
-**If you just want the package to use (and maybe even modify) it:**
+**If you just want to use PTXQC (and maybe even modify) it:**
 
 *First*, install [pandoc](https://github.com/jgm/pandoc/releases) (see bottom of linked page). Pandoc is required in order to locally build the package vignettes (documentation),
 but you can also read the [vignettes][Ref_Vign] online from the PTXQC GitHub page. More importantly, Pandoc enables PTXQC to write QC reports in HTML format (which come
