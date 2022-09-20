@@ -248,8 +248,8 @@ qcMetric_EVD_ReporterInt =  setRefClass(
   contains = "qcMetric",
   methods = list(initialize=function() {  callSuper(
     helpText = 
-      "ITRAQ/TMT reporter intensity boxplots of all PSMs for each channel and Raw file.
-The opacity (alpha value) of the bar correlates to the number of PSMs with non-zero abundance (1.0 = full labeling; 0.0 = no reporter ions; see heatmap scoring below).
+      "ITRAQ/TMT reporter intensity violin plots of all PSMs for each channel and Raw file.
+The second subplot shows labeling efficiency (LE), i.e the fraction of PSMs with non-zero abundance (100% = full labeling of all PSMs; 0% = no reporter ions at all). This is used for heatmap scoring. See below.
 
 There is a similar 'Experimental Group' based metric/plot based on proteins.txt.
 
@@ -262,8 +262,7 @@ Note: global labelling efficiency can only be judged indirectly with this metric
       Observing only very few peptides (see peptide count metric), is a good indicator.
       However, if only the labeling of a few channels failed, this will be noticable here!
 
-Labeling can still be poor, even though identification was successful. In this case, the boxplots will touch the left (0 intensity)
-side of the plot.
+Labeling can still be poor, even though identification was successful.
 
 A labeling efficiency (LE) is computed per Raw file AND channel as: the percentage of PSMs which have non-zero reporter intensity.
 Ideally LE reaches 100 percent (all peptides have an intensity in the channel; biological missingness ignored).
@@ -291,8 +290,7 @@ Each Raw file is now scored by the minimum LE of all its 4 channels.
         title_subtext = "";  
         title_color = "black"
       }
-        
-      
+      g_title = "EVD: Reporter Intensities"  
       ## use data.table for aggregation, its MUCH faster than ddply() and uses almost no extra memory
       df_reps = reshape2::melt(df_evd[, c("fc.raw.file", cols_reporter)], 
                      id.vars ="fc.raw.file", 
@@ -309,47 +307,74 @@ Each Raw file is now scored by the minimum LE of all its 4 channels.
       dt_reps$channel = factor(dt_reps$channel, levels = sort(unique(dt_reps$channel), decreasing = TRUE))
       head(dt_reps)
       
-      ## compute global boxplot stats (so we can fix min/max across plots)
-      ## also return labEff_PC (labeling efficiency in %)
-      ylims = dt_reps[, { limits = boxplot.stats(intensity + 1, coef = 0.7)$stats;
-                          list(imin = limits[1], lower = limits[2], middle = limits[3], upper = limits[4], imax = limits[5], labEff_PC = sum(intensity > 0, na.rm = TRUE) / (.N)) 
-                        },
-                        by=c("fc.raw.file", "channel")
-                     ]
-      ylims2 = range(ylims$imin, ylims$imax)
+      ylims_minmax = range(dt_reps$intensity)
+      
       fcn_boxplot_internal = function(data, title_subtext = title_subtext, title_color = title_color) 
       {
         #require(ggplot2)
         #data = ylims
-        pl = ggplot(data=data) +
-          geom_boxplot(aes_string(x = "fc.raw.file", fill = "channel", ## do not use col="channel", since this will dodge bars and loose scaling
-                                  ymin = "imin", lower = "lower", middle = "middle", upper = "upper", ymax = "imax",
-                                  alpha = "labEff_PC"),
-                       position = "dodge", stat = "identity") +
+        ### first subplot (distribution of intensities)
+        data_noZero = data[data$intensity!=0,]
+        pl = ggplot(data=data_noZero) +
+          geom_violin(aes_string(x = "fc.raw.file", 
+                                 y = "intensity",  
+                                 color = "channel",
+                                 fill = "channel"
+                                 )) +
           xlab("") + 
-          ylab("reporter intensity (log10)") +
-          guides(alpha=guide_legend(title="Label Eff"), fill = guide_legend(reverse = TRUE)) + ## inverse label order, so that channel 0 is on top
-          theme(axis.text.x = element_text(angle=45, vjust = 0.5), legend.position="right", plot.title = element_text(color=title_color)) +
-          ggtitle("EVD: Reporter label intensities", title_subtext) + 
-          #geom_hline(size = 1, alpha = 0.5, yintercept = ref_median, colour = "black") +
-          scale_alpha(range = range(ylims$labEff_PC)) +
-          scale_x_discrete_reverse(unique(data$fc.raw.file)) +
-          scale_y_log10(limits = ylims2) +
+          ylab("reporter intensity (zeros removed)") +
+          guides(#alpha = guide_legend(title="Label Eff"), 
+                 fill = guide_legend(reverse = TRUE), ## inverse label order, so that channel 0 is on top
+                 color = guide_none()) + 
+          theme(axis.text.x = element_text(angle = 45, vjust = 0.5), 
+                legend.position = "right",
+                plot.title = element_text(color = title_color)) +
+          ggtitle(g_title, title_subtext) + 
+          #scale_alpha(range = range(ylims$labEff_PC)) +
+          PTXQC:::scale_x_discrete_reverse(unique(data$fc.raw.file)) +
+          scale_y_log10(limits = ylims_minmax + 1) + ## +1 to make sure that lower bound is not 0 (--> since log(0) = error)
           coord_flip() 
-
+        #pl
+        
+        ylims = dt_reps[, { #limits = boxplot.stats(intensity, coef = 0.7)$stats;
+                          list(labEff_PC = sum(intensity > 0, na.rm = TRUE) / (.N)) 
+                        }, by = c("fc.raw.file", "channel")]
+        
+        
+        ### second subplot (labeling efficiency)
+        pl_eff = ggplot(data = ylims) + geom_bar(aes_string(x = "fc.raw.file",
+                                                            y = "labEff_PC * 100",
+                                                            fill = "channel"), 
+                                                 stat = "identity",
+                                                 position = "dodge") + 
+          xlab("") + 
+          ylab("labelling efficiency (%)") +
+          ylim(0, 100) +
+          guides(fill = guide_legend(reverse = TRUE), ## inverse label order, so that channel 0 is on top
+                 color = guide_none()) + 
+          theme(legend.position = "right") +
+          ggtitle("Fraction of Non-Zero Intensities", "") + 
+          PTXQC:::scale_x_discrete_reverse(unique(ylims$fc.raw.file)) +
+          coord_flip() 
+        #pl_eff
+        pl_both = gridExtra::grid.arrange(pl, pl_eff, ncol=2)
         #print(pl)
-        return(pl)
+        return(pl_both)
       }
-      channel_count = length(unique(ylims$channel))
-      lpl = byXflex(data = ylims, indices = ylims$fc.raw.file, subset_size = round(40 / channel_count), 
+      channel_count = length(cols_reporter)
+      lpl = byXflex(data = dt_reps, indices = dt_reps$fc.raw.file, subset_size = round(40 / channel_count), 
                     sort_indices = TRUE, FUN = fcn_boxplot_internal, title_subtext = title_subtext, title_color = title_color)
+      lpl
       # heatmap scoring
       ## .. take min score over all channels
+      ylims = dt_reps[, { #limits = boxplot.stats(intensity, coef = 0.7)$stats;
+        list(labEff_PC = sum(intensity > 0, na.rm = TRUE) / (.N)) 
+      }, by = c("fc.raw.file", "channel")]
       qcScore = ylims[, list(score_min = min(labEff_PC)), by=c("fc.raw.file")]
       colnames(qcScore) = c("fc.raw.file", .self$qcName)
   
-      
-      return(list(plots = lpl, qcScores = qcScore))
+      ## add manual title, since we return a grid.arrange() where automatic extraction is hard
+      return(list(plots = lpl, qcScores = qcScore, title = rep(list(g_title), length(lpl))))
     }, 
     qcCat = "prep", 
     qcName = "EVD:~Reporter~intensity", 
@@ -1207,6 +1232,70 @@ Heatmap score [EVD: MS<sup>2</sup> Oversampling]: The percentage of non-oversamp
     }, 
     qcCat = "MS", 
     qcName = "EVD:~MS^2~Oversampling", 
+    orderNr = 0250
+  )
+    return(.self)
+  })
+)  
+
+#####################################################################
+
+qcMetric_EVD_CarryOver =  setRefClass(
+  "qcMetric_EVD_CarryOver",
+  contains = "qcMetric",
+  methods = list(initialize=function() {  callSuper(  
+    helpTextTemplate = 
+      "Sample carryover ... not ready yet... 
+
+Heatmap score [EVD: Carryover]: The percentage of peptide identifications whose sequence gives rise to a large 'retention span'. 
+",
+    workerFcn = function(.self, df_evd)
+    {
+      ## completeness check
+      if (!checkInput(c("fc.raw.file", "ms.ms.count", "retention.length"), df_evd)) return()
+      
+      raws_perPlot = 6
+      
+      aboveThresh_fn = function(data) {
+        #t = quantile(data, probs=0.75, na.rm=TRUE) + 3*IQR(data, na.rm = TRUE)
+        t = median(data, na.rm=TRUE) * 10
+        return(t)
+      }
+      
+      rt_range = range(df_evd$retention.time, na.rm = TRUE)
+      df_carry = plyr::ddply(df_evd, "fc.raw.file", function(x) {
+        thresh = round(aboveThresh_fn(x$retention.length), 1)
+        weirds = x[x$retention.length > thresh,]
+        ## remove "0", since this would be MBR-features
+        weirds = weirds[weirds$ms.ms.count!=0,]
+        if (nrow(weirds) == 0) return(data.frame())
+        weirds$fc.raw.file = paste0(weirds$fc.raw.file, " (>", thresh, " min)")
+        h = hist(weirds$retention.time, breaks=seq(from=rt_range[1]-3, to=rt_range[2]+3, by=3), plot = FALSE)
+        result = data.frame(RT = h$mid, counts = h$counts, fn = weirds$fc.raw.file[1])
+        return(result)
+      })
+      #df_carry = result
+      df_carry$fc.raw.file = df_carry$fn
+      lpl =
+        byXflex(df_carry, df_carry$fc.raw.file, raws_perPlot, plot_DataOverRT, sort_indices = TRUE, 
+                title = "EVD: Peptides with wide RT span", y_lab = "# of Peptide Sequences")
+      lpl
+      
+      
+      qc_evd_carry = plyr::ddply(df_evd, "fc.raw.file", function(x) {
+        thresh = aboveThresh_fn(x$retention.length);
+        pc = sum(x$retention.length > thresh, na.rm = TRUE) / nrow(x)
+        return (data.frame(larger_pc=pc))
+      })
+      
+      ## QC measure for how many IDs are part of a large span
+      cname = .self$qcName
+      qc_evd_carry[, cname] = qualLinThresh(1 - qc_evd_carry$larger_pc)
+      
+      return(list(plots = lpl, qcScores = qc_evd_carry[, c("fc.raw.file", cname)]))
+    }, 
+    qcCat = "MS", 
+    qcName = "EVD:~CarryOver", 
     orderNr = 0250
   )
     return(.self)
