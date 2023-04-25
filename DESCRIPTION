@@ -1,8 +1,8 @@
 Package: PTXQC
 Type: Package
 Title: Quality Report Generation for MaxQuant and mzTab Results
-Version: 1.0.14
-Date: 2022-08-21
+Version: 1.0.15
+Date: 2023-04-23
 Author: Chris Bielow [aut, cre],
   Juliane Schmachtenberg [ctb],
   Swenja Wagner [ctb],
@@ -19,17 +19,17 @@ SystemRequirements: pandoc (http://pandoc.org) for building Vignettes
         and output reports as HTML
 Depends: R (>= 3.3.0)
 Imports: data.table, ggplot2 (>= 2.2), ggdendro, grid, gridExtra,
-        grDevices, gtable, htmlTable, jsonlite, knitr (>= 1.10),
-        magrittr, methods, ontologyIndex, plyr, R6, R6P, RColorBrewer,
-        reshape2, rmarkdown, seqinr, stats, utils, UpSetR, xml2, yaml
+        grDevices, gtable, htmlTable, knitr (>= 1.10), magrittr,
+        methods, plyr, R6, R6P, RColorBrewer, reshape2, rmarkdown,
+        rmzqc (>= 0.4.2), seqinr, stats, utils, UpSetR, xml2, yaml
 Suggests: testthat
 VignetteBuilder: knitr
 License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 URL: https://github.com/cbielow/PTXQC
 BugReports: https://github.com/cbielow/PTXQC/issues
 NeedsCompilation: no
-Packaged: 2022-09-20 20:26:31 UTC; bielow
+Packaged: 2023-04-25 14:18:52 UTC; bielow
 Repository: CRAN
-Date/Publication: 2022-09-20 21:50:10 UTC
+Date/Publication: 2023-04-25 21:50:10 UTC

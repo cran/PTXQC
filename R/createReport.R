@@ -163,12 +163,6 @@ createReport = function(txt_folder = NULL,
   ## write shortnames and sorting of filenames
   eval(expr_fn_map)$writeMappingFile(rprt_fns$filename_sorting)
   
-  
-  ## load mzQC CV
-  cv_dict = CVDictionarySingleton$new()
-  cv_dict$data = getCVDictionary() ## load the data once
-  ## --> wherever you need this data, simply re-grab the singleton using 'CVDictionarySingleton$new()$data'
-  
   ## get full filenames (and their suffix -- for mzQC metadata)
   file_meta = QCMetaFilenames$new()
   ## does only work if mqpar.xml is present (for now)
@@ -577,12 +571,14 @@ createReport = function(txt_folder = NULL,
   ######
   ######  msmsScans.txt ...
   ######
-  if (MZTAB_MODE) df_msmsScans = mzt$getMSMSScans(identified_only = FALSE)
-  else df_msmsScans = mq$readMQ(txt_files$msmsScan, type = "msms", filter = "", 
+  if (MZTAB_MODE) df_msmsScans = mzt$getMSMSScans(identified_only = FALSE) else
+     df_msmsScans = mq$readMQ(txt_files$msmsScan, type = "msms_scans", filter = "", 
                                 col_subset = c(numeric = "^ion.injection.time", 
                                                numeric = "^retention.time$", 
                                                "^Identified", 
-                                               "^Scan.event.number", 
+                                               numeric = "^Scan.event.number", 
+                                               numeric = 'Scan.index',    ## required for fixing scan.event.number, in case its broken
+                                               numeric = 'MS.scan.index', ## required for fixing scan.event.number, in case its broken
                                                "^total.ion.current",
                                                "^base.?peak.intensity", ## basepeak.intensity (MQ1.2) and base.peak.intensity (MQ1.3+)
                                                "^Raw.file",
@@ -643,10 +639,11 @@ createReport = function(txt_folder = NULL,
   #####################################################################
   ## write mzQC file
   try( ## if not enough metrics are produced, then writing will fail (e.g. one run or setQuality needs to be present)
-    writeMZQC(
-    rprt_fns$mzQC_file, 
-    assembleMZQC(lst_qcMetrics, raw_file_mapping = eval(expr_fn_map)$raw_file_mapping)
-  ))
+    rmzqc::writeMZQC(
+      rprt_fns$mzQC_file, 
+      assembleMZQC(lst_qcMetrics, raw_file_mapping = eval(expr_fn_map)$raw_file_mapping)
+    )
+  )
   
   
   #####################################################################
