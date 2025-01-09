@@ -1,15 +1,27 @@
 Package: PTXQC
 Type: Package
 Title: Quality Report Generation for MaxQuant and mzTab Results
-Version: 1.1.1
-Date: 2024-03-11
-Author: Chris Bielow [aut, cre],
-  Juliane Schmachtenberg [ctb],
-  Swenja Wagner [ctb],
-  Patricia Scheil [ctb],
-  Tom Waschischek [ctb],
-  Guido Mastrobuoni [dtc, rev]
-Maintainer: Chris Bielow <chris.bielow@bsc.fu-berlin.de>
+Version: 1.1.2
+Date: 2025-01-08
+Authors@R: c(person(given = "Chris",
+                      family = "Bielow",
+                      role = c("aut", "cre"),
+                      email = "chris.bielow@bsc.fu-berlin.de"),
+               person(given = "Juliane",
+                      family = "Schmachtenberg",
+                      role = "ctb"),
+               person(given = "Swenja",
+                      family = "Wagner",
+                      role = "ctb"),
+               person(given = "Patricia",
+                      family = "Scheil",
+                      role = "ctb"),
+               person(given = "Tom",
+                      family = "Waschischek",
+                      role = "ctb"),
+               person(given = "Guido",
+                      family = "Mastrobuoni",
+                      role = c("dtc", "rev")))
 Description: Generates Proteomics (PTX) quality control (QC) reports for shotgun LC-MS data analyzed with the 
              MaxQuant software suite (from .txt files) or mzTab files (ideally from OpenMS 'QualityControl' tool).
              Reports are customizable (target thresholds, subsetting) and available in HTML or PDF format.
@@ -18,10 +30,11 @@ Description: Generates Proteomics (PTX) quality control (QC) reports for shotgun
 SystemRequirements: pandoc (http://pandoc.org) for building Vignettes
         and output reports as HTML
 Depends: R (>= 3.3.0)
-Imports: data.table, ggplot2 (>= 2.2), ggdendro, grid, gridExtra,
+Imports: data.table, ggplot2 (>= 3.4), ggdendro, grid, gridExtra,
         grDevices, gtable, htmlTable, knitr (>= 1.10), magrittr,
-        methods, plyr, R6, R6P, RColorBrewer, reshape2, rmarkdown,
-        rmzqc (>= 0.5.0), seqinr, stats, utils, UpSetR, xml2, yaml
+        methods, plyr, R6, R6P, RColorBrewer, reshape2, rlang,
+        rmarkdown, rmzqc (>= 0.5.0), seqinr, stats, utils, UpSetR,
+        xml2, yaml
 Suggests: testthat
 VignetteBuilder: knitr
 License: BSD_3_clause + file LICENSE
@@ -30,6 +43,13 @@ RoxygenNote: 7.3.1
 URL: https://github.com/cbielow/PTXQC
 BugReports: https://github.com/cbielow/PTXQC/issues
 NeedsCompilation: no
-Packaged: 2024-03-11 14:24:21 UTC; bielow
+Packaged: 2025-01-09 12:47:03 UTC; bielow
+Author: Chris Bielow [aut, cre],
+  Juliane Schmachtenberg [ctb],
+  Swenja Wagner [ctb],
+  Patricia Scheil [ctb],
+  Tom Waschischek [ctb],
+  Guido Mastrobuoni [dtc, rev]
+Maintainer: Chris Bielow <chris.bielow@bsc.fu-berlin.de>
 Repository: CRAN
-Date/Publication: 2024-03-11 19:50:02 UTC
+Date/Publication: 2025-01-09 13:10:02 UTC
