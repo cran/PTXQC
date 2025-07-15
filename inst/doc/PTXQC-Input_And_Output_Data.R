@@ -1,3 +1,3 @@
 ## ----eval=FALSE---------------------------------------------------------------
-#  vignette("PTXQC-CustomizeReport", package = "PTXQC")
+# vignette("PTXQC-CustomizeReport", package = "PTXQC")
 
