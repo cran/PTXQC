@@ -1,8 +1,8 @@
 Package: PTXQC
 Type: Package
 Title: Quality Report Generation for MaxQuant and mzTab Results
-Version: 1.1.5
-Date: 2026-04-20
+Version: 1.1.6
+Date: 2026-08-20
 Authors@R: c(person(given = "Chris",
                       family = "Bielow",
                       role = c("aut", "cre"),
@@ -42,7 +42,7 @@ RoxygenNote: 7.3.2
 URL: https://github.com/cbielow/PTXQC
 BugReports: https://github.com/cbielow/PTXQC/issues
 NeedsCompilation: no
-Packaged: 2026-04-22 16:19:12 UTC; bielow
+Packaged: 2026-08-21 20:31:07 UTC; bielow
 Author: Chris Bielow [aut, cre],
   Juliane Schmachtenberg [ctb],
   Swenja Wagner [ctb],
@@ -51,4 +51,4 @@ Author: Chris Bielow [aut, cre],
   Guido Mastrobuoni [dtc, rev]
 Maintainer: Chris Bielow <chris.bielow@bsc.fu-berlin.de>
 Repository: CRAN
-Date/Publication: 2026-04-23 05:10:49 UTC
+Date/Publication: 2026-08-21 23:50:07 UTC
